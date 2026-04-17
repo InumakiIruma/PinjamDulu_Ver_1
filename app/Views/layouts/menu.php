@@ -78,6 +78,13 @@
             </a>
         </li>
 
+        <li class="nav-item">
+            <a href="<?= base_url('peminjaman/pengembalian') ?>" class="nav-link <?= (uri_string() == 'peminjaman/pengembalian') ? 'active' : '' ?>">
+                <i class="bi bi-arrow-return-left flex-shrink-0"></i>
+                <span class="text-truncate">Pengembalian</span>
+            </a>
+        </li>
+
         <?php if (session()->get('role') == 'admin') : ?>
 
             <div class="nav-divider text-primary">Panel Admin</div>
@@ -86,13 +93,6 @@
                 <a class="nav-link <?= (uri_string() == 'peminjaman/permintaan') ? 'active' : '' ?>" href="<?= base_url('peminjaman/permintaan') ?>">
                     <i class="bi bi-envelope-paper-fill flex-shrink-0"></i>
                     <span class="text-truncate">Permintaan Pinjam</span>
-                </a>
-            </li>
-
-            <li class="nav-item">
-                <a class="nav-link <?= (uri_string() == 'peminjaman/pengembalian') ? 'active' : '' ?>" href="<?= base_url('/peminjaman/pengembalian') ?>">
-                    <i class="bi bi-arrow-return-left flex-shrink-0"></i>
-                    <span class="text-truncate">Pengembalian</span>
                 </a>
             </li>
 
@@ -138,7 +138,7 @@
 </div>
 
 <style>
-    /* Styling tetap sama agar desain tidak berubah */
+    /* CSS tetap sama untuk menjaga konsistensi desain */
     .sidebar-wrapper {
         background-color: #ffffff !important;
         min-height: 100vh;

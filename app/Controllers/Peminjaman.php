@@ -153,16 +153,26 @@ class Peminjaman extends BaseController
     }
 
     /**
-     * 5. Halaman Daftar Pengembalian (Status: Dipinjam)
+     * 5. Halaman Daftar Pengembalian (Sisi Admin & User)
+     * FITUR GABUNGAN: Admin melihat semua, User melihat miliknya sendiri
      */
     public function pengembalian()
     {
+        $userId = session()->get('id') ?? session()->get('id_user');
+        $role   = session()->get('role');
+
+        $builder = $this->peminjamanModel->select('peminjaman.*, alat.nama_alat')
+            ->join('alat', 'alat.id = peminjaman.id_alat')
+            ->where('peminjaman.status', 'dipinjam');
+
+        // Jika yang login bukan admin, filter berdasarkan id_user agar user hanya melihat alat yang ia pinjam
+        if ($role !== 'user') {
+            $builder->where('peminjaman.id_user', $userId);
+        }
+
         $data = [
             'title'      => 'Pengembalian Alat',
-            'peminjaman' => $this->peminjamanModel->select('peminjaman.*, alat.nama_alat')
-                ->join('alat', 'alat.id = peminjaman.id_alat')
-                ->where('peminjaman.status', 'dipinjam')
-                ->findAll()
+            'peminjaman' => $builder->findAll()
         ];
 
         return view('peminjaman/pengembalian', $data);
