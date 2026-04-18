@@ -1,6 +1,8 @@
 <?= $this->extend('layouts/main') ?>
 
 <?= $this->section('content') ?>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <div class="container-fluid">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h4 class="fw-bold text-dark">Notifikasi</h4>
@@ -32,7 +34,8 @@
                                             <i class="bi bi-check2-all"></i>
                                         </a>
                                     <?php endif; ?>
-                                    <a href="<?= base_url('notifikasi/hapus/' . $n['id']) ?>" class="btn btn-sm btn-outline-danger rounded-pill" onclick="return confirm('Hapus notifikasi ini?')">
+
+                                    <a href="<?= base_url('notifikasi/hapus/' . $n['id']) ?>" class="btn btn-sm btn-outline-danger rounded-pill btn-hapus">
                                         <i class="bi bi-trash"></i>
                                     </a>
                                 </div>
@@ -44,4 +47,35 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const hapusButtons = document.querySelectorAll('.btn-hapus');
+
+        hapusButtons.forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault(); // Menghentikan link agar tidak langsung terbuka
+                const url = this.getAttribute('href');
+
+                Swal.fire({
+                    title: 'Apakah Anda yakin?',
+                    text: "Hapus notifikasi ini?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#4361ee', // Senada dengan warna dashboard Anda
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya, Hapus!',
+                    cancelButtonText: 'Batal',
+                    border: '0',
+                    borderRadius: '15px'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = url;
+                    }
+                });
+            });
+        });
+    });
+</script>
+
 <?= $this->endSection() ?>

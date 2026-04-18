@@ -1,4 +1,7 @@
-<?= $this->extend('layouts/main') ?> <?= $this->section('content') ?>
+<?= $this->extend('layouts/main') ?>
+<?= $this->section('content') ?>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <div class="container-fluid py-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
@@ -15,10 +18,25 @@
     </div>
 
     <?php if (session()->getFlashdata('success')) : ?>
-        <div class="alert alert-success border-0 shadow-sm mb-4"><?= session()->getFlashdata('success') ?></div>
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil!',
+                text: '<?= session()->getFlashdata('success') ?>',
+                timer: 3000,
+                showConfirmButton: false
+            });
+        </script>
     <?php endif; ?>
+
     <?php if (session()->getFlashdata('error')) : ?>
-        <div class="alert alert-danger border-0 shadow-sm mb-4"><?= session()->getFlashdata('error') ?></div>
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Gagal!',
+                text: '<?= session()->getFlashdata('error') ?>',
+            });
+        </script>
     <?php endif; ?>
 
     <div class="card border-0 shadow-sm rounded-4">
@@ -58,8 +76,7 @@
                                 <?php if (session()->get('role') == 'admin') : ?>
                                     <td class="text-center pe-4">
                                         <a href="<?= base_url('users/hapus/' . $u['id']) ?>"
-                                            class="btn btn-light btn-sm text-danger rounded-3"
-                                            onclick="return confirm('Apakah Anda yakin ingin menghapus user ini?')">
+                                            class="btn btn-light btn-sm text-danger rounded-3 btn-hapus">
                                             <i class="bi bi-trash3-fill"></i>
                                         </a>
                                     </td>
@@ -122,5 +139,33 @@
         </div>
     </div>
 <?php endif; ?>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const hapusButtons = document.querySelectorAll('.btn-hapus');
+
+        hapusButtons.forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                const url = this.getAttribute('href');
+
+                Swal.fire({
+                    title: 'Apakah Anda yakin?',
+                    text: "User ini akan dihapus permanen!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#4361ee',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya, Hapus!',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = url;
+                    }
+                });
+            });
+        });
+    });
+</script>
 
 <?= $this->endSection() ?>
