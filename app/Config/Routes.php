@@ -76,3 +76,5 @@ $routes->group('notifikasi', $authFilter, function ($routes) {
     $routes->get('read/(:num)', 'Notifikasi::read/$1');
     $routes->get('hapus/(:num)', 'Notifikasi::hapus/$1');
 });
+$routes->get('settings', 'Settings::index');
+$routes->post('settings/update-app', 'Settings::updateApp'); // Contoh untuk simpan nama aplikasi

@@ -127,9 +127,16 @@
 
         <hr class="my-4 mx-2 opacity-25">
 
+        <li class="nav-item">
+            <a class="nav-link <?= (uri_string() == 'settings') ? 'active' : '' ?>" href="<?= base_url('/settings') ?>">
+                <i class="bi bi-gear-fill flex-shrink-0 me-3"></i>
+                <span class="text-truncate">Pengaturan</span>
+            </a>
+        </li>
+
         <li class="nav-item mb-4">
             <a class="nav-link logout-btn text-danger fw-bold" href="<?= base_url('/logout') ?>">
-                <i class="bi bi-box-arrow-right me-3"></i> Keluar Sistem
+                <i class="bi bi-box-arrow-right flex-shrink-0 me-3"></i> Keluar Sistem
             </a>
         </li>
     </ul>
@@ -160,7 +167,9 @@
         border-radius: 10px;
     }
 
-    .shadow-primary { box-shadow: 0 4px 12px rgba(67, 97, 238, 0.4); }
+    .shadow-primary {
+        box-shadow: 0 4px 12px rgba(67, 97, 238, 0.4);
+    }
 
     .profile-card {
         background: #f8fafc;
@@ -176,9 +185,20 @@
         text-transform: uppercase;
     }
 
-    .role-admin { background: #e0e7ff; color: #4361ee; }
-    .role-staff { background: #dcfce7; color: #16a34a; }
-    .role-user { background: #f1f5f9; color: #64748b; }
+    .role-admin {
+        background: #e0e7ff;
+        color: #4361ee;
+    }
+
+    .role-staff {
+        background: #dcfce7;
+        color: #16a34a;
+    }
+
+    .role-user {
+        background: #f1f5f9;
+        color: #64748b;
+    }
 
     .custom-nav .nav-link {
         display: flex;
