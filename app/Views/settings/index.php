@@ -154,21 +154,178 @@
 </div>
 
 <style>
-    .list-group-item.active {
-        background-color: #4361ee !important;
-        border-color: #4361ee !important;
+    /* =========================================
+       SETTINGS PAGE PREMIUM SKIN
+       ========================================= */
+
+    /* 1. Global Page Background & Font */
+    body {
+        background-color: #f8fafc;
+        /* Latar belakang abu-abu sangat muda */
+    }
+
+    .container.py-4 {
+        max-width: 1140px;
+    }
+
+    /* 2. Sidebar Navigation Styling */
+    #settings-tabs {
+        background: #ffffff;
     }
 
     .list-group-item {
         color: #64748b;
-        font-size: 0.95rem;
-        transition: 0.2s;
+        font-weight: 500;
+        font-size: 0.9rem;
+        border: none !important;
+        margin: 4px 8px;
+        /* Memberi jarak antar menu */
+        border-radius: 10px !important;
+        /* Membuat menu lonjong */
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        display: flex;
+        align-items: center;
     }
 
+    /* Hover State */
     .list-group-item:hover:not(.active) {
-        background-color: #f8fafc;
+        background-color: #f1f5f9 !important;
         color: #4361ee;
-        padding-left: 1.5rem !important;
+        transform: translateX(5px);
+    }
+
+    /* Active State */
+    .list-group-item.active {
+        background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%) !important;
+        color: #ffffff !important;
+        box-shadow: 0 8px 15px rgba(67, 97, 238, 0.25);
+    }
+
+    .list-group-item i {
+        font-size: 1.1rem;
+        opacity: 0.8;
+    }
+
+    /* 3. Card & Content Styling */
+    .tab-content .card {
+        border: 1px solid rgba(226, 232, 240, 0.6);
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.02) !important;
+    }
+
+    .tab-content h5 {
+        color: #1e293b;
+        letter-spacing: -0.025em;
+        position: relative;
+        padding-bottom: 10px;
+    }
+
+    /* Garis bawah tipis di judul */
+    .tab-content h5::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 40px;
+        height: 3px;
+        background: #4361ee;
+        border-radius: 10px;
+    }
+
+    /* 4. Form Controls - Modern Look */
+    .form-control,
+    .form-select {
+        border: 1.5px solid #e2e8f0;
+        padding: 0.6rem 1rem;
+        font-size: 0.9rem;
+        color: #334155;
+        transition: all 0.2s ease;
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+        border-color: #4361ee;
+        box-shadow: 0 0 0 4px rgba(67, 97, 238, 0.1);
+        background-color: #ffffff;
+    }
+
+    .form-label {
+        color: #475569;
+        margin-bottom: 0.5rem;
+        display: block;
+    }
+
+    /* 5. Custom Switches & Buttons */
+    .form-check-input:checked {
+        background-color: #4361ee;
+        border-color: #4361ee;
+    }
+
+    .btn-primary {
+        background: #4361ee;
+        border: none;
+        font-weight: 600;
+        padding: 0.6rem 1.5rem;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 6px -1px rgba(67, 97, 238, 0.2);
+    }
+
+    .btn-primary:hover {
+        background: #3730a3;
+        transform: translateY(-2px);
+        box-shadow: 0 10px 15px -3px rgba(67, 97, 238, 0.3);
+    }
+
+    .btn-outline-primary {
+        border: 1.5px solid #4361ee;
+        color: #4361ee;
+        font-weight: 600;
+    }
+
+    /* 6. Table Styling for Activity Log */
+    .table {
+        margin-top: 10px;
+    }
+
+    .table thead th {
+        background-color: #f8fafc;
+        border-bottom: 2px solid #e2e8f0;
+        color: #64748b;
+        text-transform: uppercase;
+        font-size: 0.7rem;
+        letter-spacing: 0.05em;
+        padding: 12px;
+    }
+
+    .table tbody td {
+        padding: 12px;
+        vertical-align: middle;
+        border-bottom: 1px solid #f1f5f9;
+        color: #334155;
+    }
+
+    /* 7. Icon Animations */
+    .display-4.bi-database-fill-gear {
+        filter: drop-shadow(0 10px 15px rgba(67, 97, 238, 0.2));
+        animation: rotateIcon 10s linear infinite;
+    }
+
+    @keyframes rotateIcon {
+        from {
+            transform: rotate(0deg);
+        }
+
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    /* Utilitas tambahan untuk kerapihan */
+    .rounded-4 {
+        border-radius: 1.2rem !important;
+    }
+
+    .text-muted {
+        color: #94a3b8 !important;
     }
 </style>
 
