@@ -40,12 +40,12 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label small fw-bold">Mode Tampilan</label>
-                            <select class="form-select rounded-3">
-                                <option>Terang (Default)</option>
-                                <option>Gelap</option>
+                            <select class="form-select rounded-3" id="themeSelector">
+                                <option value="light">Terang (Default)</option>
+                                <option value="dark">Gelap</option>
                             </select>
                         </div>
-                        <button class="btn btn-primary rounded-pill px-4">Simpan Perubahan</button>
+                        <button id="btnSimpanUmum" class="btn btn-primary rounded-pill px-4">Simpan Perubahan</button>
                     </div>
                 </div>
 
@@ -154,21 +154,15 @@
 </div>
 
 <style>
-    /* =========================================
-       SETTINGS PAGE PREMIUM SKIN
-       ========================================= */
-
-    /* 1. Global Page Background & Font */
+    /* CSS asli Anda tetap terjaga */
     body {
         background-color: #f8fafc;
-        /* Latar belakang abu-abu sangat muda */
     }
 
     .container.py-4 {
         max-width: 1140px;
     }
 
-    /* 2. Sidebar Navigation Styling */
     #settings-tabs {
         background: #ffffff;
     }
@@ -179,22 +173,18 @@
         font-size: 0.9rem;
         border: none !important;
         margin: 4px 8px;
-        /* Memberi jarak antar menu */
         border-radius: 10px !important;
-        /* Membuat menu lonjong */
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         display: flex;
         align-items: center;
     }
 
-    /* Hover State */
     .list-group-item:hover:not(.active) {
         background-color: #f1f5f9 !important;
         color: #4361ee;
         transform: translateX(5px);
     }
 
-    /* Active State */
     .list-group-item.active {
         background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%) !important;
         color: #ffffff !important;
@@ -206,7 +196,6 @@
         opacity: 0.8;
     }
 
-    /* 3. Card & Content Styling */
     .tab-content .card {
         border: 1px solid rgba(226, 232, 240, 0.6);
         box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.02) !important;
@@ -219,7 +208,6 @@
         padding-bottom: 10px;
     }
 
-    /* Garis bawah tipis di judul */
     .tab-content h5::after {
         content: '';
         position: absolute;
@@ -231,7 +219,6 @@
         border-radius: 10px;
     }
 
-    /* 4. Form Controls - Modern Look */
     .form-control,
     .form-select {
         border: 1.5px solid #e2e8f0;
@@ -254,7 +241,6 @@
         display: block;
     }
 
-    /* 5. Custom Switches & Buttons */
     .form-check-input:checked {
         background-color: #4361ee;
         border-color: #4361ee;
@@ -281,11 +267,6 @@
         font-weight: 600;
     }
 
-    /* 6. Table Styling for Activity Log */
-    .table {
-        margin-top: 10px;
-    }
-
     .table thead th {
         background-color: #f8fafc;
         border-bottom: 2px solid #e2e8f0;
@@ -303,7 +284,6 @@
         color: #334155;
     }
 
-    /* 7. Icon Animations */
     .display-4.bi-database-fill-gear {
         filter: drop-shadow(0 10px 15px rgba(67, 97, 238, 0.2));
         animation: rotateIcon 10s linear infinite;
@@ -319,7 +299,6 @@
         }
     }
 
-    /* Utilitas tambahan untuk kerapihan */
     .rounded-4 {
         border-radius: 1.2rem !important;
     }
@@ -328,5 +307,43 @@
         color: #94a3b8 !important;
     }
 </style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const themeSelector = document.getElementById('themeSelector');
+        const btnSimpan = document.getElementById('btnSimpanUmum');
+
+        // 1. Ambil tema yang tersimpan di localStorage
+        const currentTheme = localStorage.getItem('theme') || 'light';
+
+        // 2. Set dropdown agar sesuai dengan tema saat ini
+        if (themeSelector) {
+            themeSelector.value = currentTheme;
+        }
+
+        // 3. Aksi saat tombol "Simpan Perubahan" diklik
+        if (btnSimpan) {
+            btnSimpan.addEventListener('click', function() {
+                const selectedTheme = themeSelector.value;
+
+                // Simpan pilihan ke memori browser
+                localStorage.setItem('theme', selectedTheme);
+
+                // Ubah tema di tag <html> secara instan
+                document.documentElement.setAttribute('data-theme', selectedTheme);
+
+                // Berikan notifikasi sukses
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Pengaturan Disimpan',
+                    text: `Tampilan aplikasi sekarang dalam mode ${selectedTheme === 'dark' ? 'Gelap' : 'Terang'}.`,
+                    showConfirmButton: false,
+                    timer: 1500,
+                    borderRadius: '20px'
+                });
+            });
+        }
+    });
+</script>
 
 <?= $this->endSection() ?>
