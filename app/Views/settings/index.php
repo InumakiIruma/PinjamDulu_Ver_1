@@ -31,6 +31,39 @@
         <div class="col-lg-9">
             <div class="tab-content">
 
+                <div class="tab-pane fade show active" id="umum">
+                    <div class="card border-0 shadow-sm rounded-4 p-4">
+                        <h5 class="fw-bold mb-4">Pengaturan Umum</h5>
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold">Nama Aplikasi</label>
+                            <input type="text" class="form-control rounded-3" value="PinjamDulu App">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold">Mode Tampilan</label>
+                            <select class="form-select rounded-3">
+                                <option>Terang (Default)</option>
+                                <option>Gelap</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-primary rounded-pill px-4">Simpan Perubahan</button>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="notifikasi">
+                    <div class="card border-0 shadow-sm rounded-4 p-4">
+                        <h5 class="fw-bold mb-4">Pusat Notifikasi</h5>
+                        <div class="form-check form-switch mb-3">
+                            <input class="form-check-input" type="checkbox" checked id="notifPeminjaman">
+                            <label class="form-check-label" for="notifPeminjaman">Notifikasi Peminjaman Baru</label>
+                        </div>
+                        <div class="form-check form-switch mb-3">
+                            <input class="form-check-input" type="checkbox" checked id="notifTerlambat">
+                            <label class="form-check-label" for="notifTerlambat">Peringatan Keterlambatan</label>
+                        </div>
+                        <button class="btn btn-primary rounded-pill px-4">Simpan</button>
+                    </div>
+                </div>
+
                 <div class="tab-pane fade" id="kategori-custom">
                     <div class="card border-0 shadow-sm rounded-4 p-4">
                         <h5 class="fw-bold mb-4">Preferensi Kategori</h5>
