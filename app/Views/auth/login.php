@@ -202,15 +202,22 @@
                     <button type="submit" class="btn-main">Masuk ke Dashboard</button>
                 </form>
 
-                <div class="text-center mt-4">
-                    <span class="text-muted small">Belum terdaftar?</span>
-                    <a href="<?= base_url('users/create') ?>" class="btn-ghost">
-                        Buat Akun Sekarang
-                    </a>
+                <div class="mt-4">
+                    <div class="text-center mb-3">
+                        <span class="text-muted small">Belum terdaftar?</span>
+                    </div>
+                    <div class="d-grid gap-2">
+                        <a href="<?= base_url('users/create') ?>" class="btn-ghost m-0">
+                            <i class="bi bi-person-plus me-1"></i> Buat Akun Sekarang
+                        </a>
+                        <div class="text-center mt-2">
+                            <a href="<?= base_url('restore') ?>" class="text-danger text-decoration-none small fw-bold">
+                                <i class="bi bi-database-fill-gear me-1"></i> System Restore Database
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
 
 </body>
 

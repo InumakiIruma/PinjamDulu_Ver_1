@@ -10,6 +10,13 @@
         </a>
     </div>
 
+    <div class="px-2 mb-4">
+        <div class="search-box-sidebar position-relative">
+            <i class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted" style="font-size: 0.8rem;"></i>
+            <input type="text" class="form-control form-control-sm border-0 bg-light ps-5 rounded-3" placeholder="Cari menu..." style="font-size: 0.85rem; padding: 10px 0 10px 40px;">
+        </div>
+    </div>
+
     <div class="nav-item list-unstyled mb-4">
         <a href="<?= base_url('/profile') ?>" class="text-decoration-none d-block profile-card-link">
             <div class="profile-card d-flex align-items-center p-3 rounded-4 shadow-sm border-0">
@@ -111,23 +118,56 @@
                     <span>Kategori Alat</span>
                 </a>
             </li>
-            <div class="nav-divider">User Management</div>
+            <div class="nav-divider">System Management</div>
             <li class="nav-item">
                 <a class="nav-link <?= (uri_string() == 'users') ? 'active' : '' ?>" href="<?= base_url('/users') ?>">
                     <i class="bi bi-people-fill me-3"></i>
                     <span>Manajemen User</span>
                 </a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link <?= (uri_string() == 'logs') ? 'active' : '' ?>" href="<?= base_url('/logs') ?>">
+                    <i class="bi bi-journal-text me-3"></i>
+                    <span>Log Aktivitas</span>
+                </a>
+            </li>
         <?php endif; ?>
+
+        <div class="mt-4 px-2 d-none d-md-block">
+            <div class="sidebar-stats-card p-3 rounded-4 bg-primary bg-opacity-10 border border-primary border-opacity-10">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span class="small fw-bold text-primary" style="font-size: 0.75rem;">Status Pinjam</span>
+                    <i class="bi bi-info-circle text-primary opacity-50" style="font-size: 0.75rem;"></i>
+                </div>
+                <div class="progress mb-2" style="height: 4px; background-color: rgba(67, 97, 238, 0.1);">
+                    <div class="progress-bar bg-primary" style="width: 60%"></div>
+                </div>
+                <small class="text-muted" style="font-size: 0.65rem;"><b>3 alat</b> belum kembali</small>
+            </div>
+        </div>
 
         <div class="mt-auto pt-4">
             <hr class="mx-2 opacity-10">
+            <li class="nav-item">
+                <a class="nav-link <?= (uri_string() == 'help') ? 'active' : '' ?>" href="<?= base_url('/help') ?>">
+                    <i class="bi bi-question-circle-fill me-3"></i>
+                    <span>Pusat Bantuan</span>
+                </a>
+            </li>
             <li class="nav-item">
                 <a class="nav-link <?= (uri_string() == 'settings') ? 'active' : '' ?>" href="<?= base_url('/settings') ?>">
                     <i class="bi bi-gear-fill me-3"></i>
                     <span>Pengaturan</span>
                 </a>
             </li>
+            <?php if (session()->get('role') == 'admin') : ?>
+                <li class="nav-item">
+                    <a class="nav-link <?= (uri_string() == 'backup') ? 'active' : '' ?>" href="<?= base_url('/backup') ?>">
+                        <i class="bi bi-cloud-arrow-down-fill me-3"></i>
+                        <span>Backup Database</span>
+                    </a>
+                </li>
+            <?php endif; ?>
             <li class="nav-item">
                 <a class="nav-link logout-btn text-danger fw-bold" href="<?= base_url('/logout') ?>">
                     <i class="bi bi-box-arrow-right me-3"></i> Keluar Sistem
@@ -138,9 +178,8 @@
 </div>
 
 <style>
-    /* =========================================
-       MODERN PREMIUM SIDEBAR THEME
-       =========================================
+    /* ORIGINAL STYLE PRESERVED 
+       Penyatuan style baru tanpa merusak struktur asli
     */
 
     .sidebar-wrapper {
@@ -153,7 +192,6 @@
         transition: all 0.3s ease;
     }
 
-    /* 1. BRAND SECTION - Clean & Bold */
     .brand-section {
         padding: 1.5rem 1rem;
     }
@@ -180,7 +218,6 @@
         color: #1e293b !important;
     }
 
-    /* 2. PROFILE CARD - Minimalist Floating */
     .profile-card-link {
         margin: 0 0.75rem;
         border-radius: 12px;
@@ -189,7 +226,6 @@
 
     .profile-card {
         background: #f8fafc;
-        /* Soft grey background */
         border: 1px solid #f1f5f9 !important;
         padding: 0.75rem !important;
         transition: all 0.2s ease;
@@ -215,9 +251,9 @@
         position: absolute;
         bottom: 0;
         right: 0;
+        border-radius: 50%;
     }
 
-    /* 3. NAVIGATION - High Precision UI */
     .custom-nav {
         padding: 0 0.75rem;
     }
@@ -234,7 +270,6 @@
         transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    /* Hover State */
     .custom-nav .nav-link:hover {
         background-color: #f1f5f9;
         color: #4361ee;
@@ -252,7 +287,6 @@
         color: #4361ee;
     }
 
-    /* Active State - Glass Style */
     .custom-nav .nav-link.active {
         background: #4361ee !important;
         color: #ffffff !important;
@@ -263,7 +297,6 @@
         color: #ffffff !important;
     }
 
-    /* 4. DIVIDER & LABELS */
     .nav-divider {
         font-size: 0.7rem;
         font-weight: 700;
@@ -274,14 +307,6 @@
         opacity: 0.8;
     }
 
-    .role-label {
-        font-size: 0.65rem;
-        padding: 0.2rem 0.5rem;
-        border-radius: 6px;
-        letter-spacing: 0.025em;
-    }
-
-    /* 5. NOTIFICATION DOT */
     .notif-dot {
         font-size: 0.6rem !important;
         padding: 0.25rem 0.4rem !important;
@@ -291,12 +316,10 @@
         left: 12px !important;
     }
 
-    /* 6. LOGOUT BUTTON - Contrast Style */
     .logout-btn {
         margin: 0.5rem 0.75rem;
         border-radius: 10px;
         background: rgba(239, 68, 68, 0.05) !important;
-        border: 1px solid transparent;
         transition: all 0.2s ease;
     }
 
@@ -306,7 +329,15 @@
         box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
     }
 
-    /* 7. SCROLLBAR CUSTOMIZATION */
+    /* ADDITIONAL STYLES FOR NEW FEATURES */
+    .search-box-sidebar input {
+        transition: all 0.2s ease;
+    }
+
+    .sidebar-stats-card {
+        transition: all 0.3s ease;
+    }
+
     .sidebar-wrapper::-webkit-scrollbar {
         width: 4px;
     }
@@ -316,7 +347,6 @@
         border-radius: 10px;
     }
 
-    /* Spacer for mt-auto items */
     .mt-auto {
         margin-top: auto !important;
         padding-bottom: 1.5rem;

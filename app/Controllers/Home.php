@@ -9,11 +9,18 @@ class Home extends BaseController
 {
     public function index(): string
     {
-        // 1. Inisialisasi Model
+        // 1. Panggil Helper Log agar fungsi panggil_log() bisa digunakan
+        helper('log');
+
+        // 2. Inisialisasi Model
         $alatModel = new AlatModel();
         $pinjamModel = new PeminjamanModel();
 
-        // 2. Siapkan data (Mempertahankan variabel asli kamu)
+        // 3. Catat aktivitas ke Log (Contoh: Mencatat akses dashboard)
+        // Ini akan muncul di halaman Log Aktivitas kamu
+        panggil_log('AKSES DASHBOARD', 'User membuka halaman Dashboard utama');
+
+        // 4. Siapkan data (Mempertahankan variabel asli kamu)
         $data = [
             'title'             => 'Dashboard Pengelola',
             'totalAlat'         => $alatModel->countAll(),
@@ -33,7 +40,7 @@ class Home extends BaseController
                 ->findAll()
         ];
 
-        // 3. Kirim data ke view dashboard
+        // 5. Kirim data ke view dashboard
         return view('layouts/dashboard', $data);
     }
 }

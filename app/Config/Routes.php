@@ -78,3 +78,23 @@ $routes->group('notifikasi', $authFilter, function ($routes) {
 });
 $routes->get('settings', 'Settings::index');
 $routes->post('settings/update-app', 'Settings::updateApp'); // Contoh untuk simpan nama aplikasi
+// Tambahkan ini
+// Panggil "Log" bukan "LogController"
+$routes->get('logs', 'Log::index');
+$routes->get('jalankan-migrasi', function () {
+    $migrate = \Config\Services::migrations();
+    try {
+        $migrate->latest();
+        return "Sukses! Tabel log sudah dibuat.";
+    } catch (\Throwable $e) {
+        return "Gagal: " . $e->getMessage();
+    }
+});
+$routes->get('/backup', 'Backup::index');
+//////////////////Restore///////////////////
+$routes->get('/restore', 'Restore::index');
+$routes->post('/restore/auth', 'Restore::auth');
+$routes->get('/restore/form', 'Restore::form');
+$routes->post('/restore/process', 'Restore::process');
+/////////////////////////////////////////////////
+$routes->get('help', 'Help::index');
