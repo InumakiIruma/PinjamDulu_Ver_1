@@ -73,6 +73,7 @@ $routes->group('users', $authFilter, function ($routes) {
 // --- 10. Notifikasi ---
 $routes->group('notifikasi', $authFilter, function ($routes) {
     $routes->get('/', 'Notifikasi::index');
+    $routes->get('readAll', 'Notifikasi::readAll'); // Pindahkan ke dalam grup
     $routes->get('read/(:num)', 'Notifikasi::read/$1');
     $routes->get('hapus/(:num)', 'Notifikasi::hapus/$1');
 });
@@ -101,3 +102,7 @@ $routes->get('help', 'Help::index');
 
 $routes->post('auth/register', 'Auth::register');
 $routes->get('auth/verify_page', 'Auth::verify_page');
+
+// BENAR: Taruh readAll di atas route yang ada ID-nya
+$routes->get('notifikasi/readAll', 'Notifikasi::readAll');
+$routes->get('notifikasi/read/(:num)', 'Notifikasi::read/$1');

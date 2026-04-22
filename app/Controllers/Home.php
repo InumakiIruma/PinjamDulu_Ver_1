@@ -23,12 +23,16 @@ class Home extends BaseController
         $data = [
             'title'             => 'Dashboard Pengelola',
             'totalAlat'         => $alatModel->countAll(),
-            // Logika berdasarkan kolom status di tabel alat
+
+            // Logika berdasarkan kolom status di tabel alat (Pastikan sesuai ENUM di DB: 'Tersedia')
             'totalTersedia'     => $alatModel->where('status', 'Tersedia')->countAllResults(),
-            'totalDipinjam'     => $alatModel->where('status', 'Dipinjam')->countAllResults(),
-            // Logika keterlambatan
+
+            // PERBAIKAN: Hitung dari tabel peminjaman dengan status 'dipinjam' (huruf kecil sesuai DB)
+            'totalDipinjam'     => $pinjamModel->where('status', 'dipinjam')->countAllResults(),
+
+            // PERBAIKAN: Logika keterlambatan (Status 'dipinjam' huruf kecil sesuai ENUM di DB)
             'totalTerlambat'    => $pinjamModel->where('tgl_kembali <', date('Y-m-d'))
-                ->where('status', 'Dipinjam')
+                ->where('status', 'dipinjam')
                 ->countAllResults(),
 
             // Mengambil 5 transaksi terbaru dengan JOIN agar nama alat muncul
@@ -40,7 +44,6 @@ class Home extends BaseController
         ];
 
         // 5. Kirim data ke view dashboard dengan menggabungkan data global dari BaseController
-        // array_merge($this->data, $data) memastikan widget sidebar mendapatkan angka real-time
         return view('layouts/dashboard', array_merge($this->data, $data));
     }
 }

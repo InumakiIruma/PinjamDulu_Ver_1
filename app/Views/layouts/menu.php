@@ -1,202 +1,211 @@
-<div class="sidebar-wrapper py-4 px-3 d-flex flex-column h-100">
-    <div class="brand-section mb-4 ps-2">
-        <a class="text-decoration-none d-flex align-items-center" href="<?= base_url('/') ?>">
-            <div class="brand-icon-box shadow-primary flex-shrink-0 me-2">
-                <i class="bi bi-tools text-white"></i>
-            </div>
-            <span class="brand-text text-dark">
-                <span class="fw-bold fs-5 text-primary">PinjamDulu</span><span class="fw-light fs-5">App</span>
-            </span>
-        </a>
-    </div>
-
-    <div class="px-2 mb-4">
-        <div class="search-box-sidebar position-relative">
-            <i class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted" style="font-size: 0.8rem;"></i>
-            <input type="text" class="form-control form-control-sm border-0 bg-light ps-5 rounded-3" placeholder="Cari menu..." style="font-size: 0.85rem; padding: 10px 0 10px 40px;">
+<div id="sidebar" class="sidebar no-print">
+    <div class="sidebar-wrapper py-4 px-3 d-flex flex-column h-100">
+        <div class="brand-section mb-4 ps-2">
+            <a class="text-decoration-none d-flex align-items-center" href="<?= base_url('/') ?>">
+                <div class="brand-icon-box shadow-primary flex-shrink-0 me-2">
+                    <i class="bi bi-tools text-white"></i>
+                </div>
+                <span class="brand-text text-dark">
+                    <span class="fw-bold fs-5 text-primary">PinjamDulu</span><span class="fw-light fs-5">App</span>
+                </span>
+            </a>
         </div>
-    </div>
 
-    <div class="nav-item list-unstyled mb-4">
-        <a href="<?= base_url('/profile') ?>" class="text-decoration-none d-block profile-card-link">
-            <div class="profile-card d-flex align-items-center p-3 rounded-4 shadow-sm border-0">
-                <div class="position-relative flex-shrink-0">
-                    <img src="<?= base_url('uploads/users/' . (session()->get('foto') ?: 'default.png')) ?>"
-                        class="avatar-img rounded-circle border border-2 border-white shadow-sm"
-                        width="45" height="45" style="object-fit: cover;">
-                    <span class="status-online-dot"></span>
-                </div>
-
-                <div class="ms-3 flex-grow-1 overflow-hidden">
-                    <p class="mb-0 fw-bold text-dark small text-truncate">
-                        <?= session()->get('nama') ?: 'Guest' ?>
-                    </p>
-                    <?php
-                    $role = session()->get('role');
-                    $badgeClass = ($role == 'admin') ? 'bg-primary' : (($role == 'petugas') ? 'bg-success' : 'bg-secondary');
-                    ?>
-                    <span class="badge <?= $badgeClass ?> bg-opacity-10 text-<?= str_replace('bg-', '', $badgeClass) ?> border-0 fw-bold" style="font-size: 0.65rem; padding: 4px 8px;">
-                        <i class="bi <?= ($role == 'admin') ? 'bi-shield-lock' : (($role == 'petugas') ? 'bi-person-badge' : 'bi-person') ?> me-1"></i>
-                        <?= strtoupper($role ?: 'GUEST') ?>
-                    </span>
-                </div>
-                <i class="bi bi-chevron-right text-muted extra-small ms-1"></i>
+        <div class="px-2 mb-4">
+            <div class="search-box-sidebar position-relative">
+                <i class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted" style="font-size: 0.8rem;"></i>
+                <input type="text" class="form-control form-control-sm border-0 bg-light ps-5 rounded-3" placeholder="Cari menu..." style="font-size: 0.85rem; padding: 10px 0 10px 40px;">
             </div>
-        </a>
-    </div>
+        </div>
 
-    <ul class="nav flex-column custom-nav">
-        <li class="nav-item">
-            <a class="nav-link <?= (uri_string() == '' || uri_string() == 'dashboard') ? 'active' : '' ?>" href="<?= base_url('/') ?>">
-                <i class="bi bi-grid-1x2-fill me-3"></i>
-                <span>Dashboard</span>
-            </a>
-        </li>
+        <div class="nav-item list-unstyled mb-4">
+            <a href="<?= base_url('/profile') ?>" class="text-decoration-none d-block profile-card-link">
+                <div class="profile-card d-flex align-items-center p-3 rounded-4 shadow-sm border-0">
+                    <div class="position-relative flex-shrink-0">
+                        <img src="<?= base_url('uploads/users/' . (session()->get('foto') ?: 'default.png')) ?>"
+                            class="avatar-img rounded-circle border border-2 border-white shadow-sm"
+                            width="45" height="45" style="object-fit: cover;">
+                        <span class="status-online-dot"></span>
+                    </div>
 
-        <li class="nav-item">
-            <a class="nav-link <?= (uri_string() == 'notifikasi') ? 'active' : '' ?>" href="<?= base_url('notifikasi') ?>">
-                <div class="position-relative d-flex align-items-center">
-                    <i class="bi bi-bell-fill me-3"></i>
-                    <?php if (isset($totalNotif) && $totalNotif > 0) : ?>
-                        <span class="notif-dot badge rounded-pill bg-danger border border-white">
-                            <?= $totalNotif ?>
+                    <div class="ms-3 flex-grow-1 overflow-hidden">
+                        <p class="mb-0 fw-bold text-dark small text-truncate">
+                            <?= session()->get('nama') ?: 'Guest' ?>
+                        </p>
+                        <?php
+                        $role = session()->get('role');
+                        $badgeClass = ($role == 'admin') ? 'bg-primary' : (($role == 'petugas') ? 'bg-success' : 'bg-secondary');
+                        ?>
+                        <span class="badge <?= $badgeClass ?> bg-opacity-10 text-<?= str_replace('bg-', '', $badgeClass) ?> border-0 fw-bold" style="font-size: 0.65rem; padding: 4px 8px;">
+                            <i class="bi <?= ($role == 'admin') ? 'bi-shield-lock' : (($role == 'petugas') ? 'bi-person-badge' : 'bi-person') ?> me-1"></i>
+                            <?= strtoupper($role ?: 'GUEST') ?>
                         </span>
-                    <?php endif; ?>
+                    </div>
+                    <i class="bi bi-chevron-right text-muted extra-small ms-1"></i>
                 </div>
-                <span>Notifikasi</span>
             </a>
-        </li>
+        </div>
 
-        <div class="nav-divider">Transaksi</div>
-        <li class="nav-item">
-            <a class="nav-link <?= (uri_string() == 'peminjaman') ? 'active' : '' ?>" href="<?= base_url('/peminjaman') ?>">
-                <i class="bi bi-cart-plus-fill me-3"></i>
-                <span>Pilih Alat</span>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link <?= (uri_string() == 'peminjaman/history') ? 'active' : '' ?>" href="<?= base_url('/peminjaman/history') ?>">
-                <i class="bi bi-clock-history me-3"></i>
-                <span>Riwayat Saya</span>
-            </a>
-        </li>
-
-        <li class="nav-item">
-            <a href="<?= base_url('peminjaman/pengembalian') ?>" class="nav-link <?= (uri_string() == 'peminjaman/pengembalian') ? 'active' : '' ?>">
-                <i class="bi bi-arrow-return-left me-3"></i>
-                <span>Pengembalian</span>
-            </a>
-        </li>
-
-        <?php if ($role == 'admin' || $role == 'petugas') : ?>
-            <div class="nav-divider text-primary">Panel Operasional</div>
+        <ul class="nav flex-column custom-nav">
             <li class="nav-item">
-                <a class="nav-link <?= (uri_string() == 'peminjaman/permintaan') ? 'active' : '' ?>" href="<?= base_url('peminjaman/permintaan') ?>">
-                    <i class="bi bi-envelope-paper-fill me-3"></i>
-                    <span>Permintaan Pinjam</span>
+                <a class="nav-link <?= (uri_string() == '' || uri_string() == 'dashboard') ? 'active' : '' ?>" href="<?= base_url('/') ?>">
+                    <i class="bi bi-grid-1x2-fill me-3"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link <?= (uri_string() == 'notifikasi') ? 'active' : '' ?>" href="<?= base_url('notifikasi') ?>">
+                    <div class="position-relative d-flex align-items-center">
+                        <i class="bi bi-bell-fill me-3"></i>
+                        <?php if (isset($totalNotif) && $totalNotif > 0) : ?>
+                            <span class="notif-dot badge rounded-pill bg-danger border border-white">
+                                <?= $totalNotif ?>
+                            </span>
+                        <?php endif; ?>
+                    </div>
+                    <span>Notifikasi</span>
+                </a>
+            </li>
+
+            <div class="nav-divider">Transaksi</div>
+            <li class="nav-item">
+                <a class="nav-link <?= (uri_string() == 'peminjaman') ? 'active' : '' ?>" href="<?= base_url('/peminjaman') ?>">
+                    <i class="bi bi-cart-plus-fill me-3"></i>
+                    <span>Pilih Alat</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link <?= (uri_string() == 'laporan') ? 'active' : '' ?>" href="<?= base_url('/laporan') ?>">
-                    <i class="bi bi-file-earmark-bar-graph-fill me-3"></i>
-                    <span>Laporan</span>
+                <a class="nav-link <?= (uri_string() == 'peminjaman/history') ? 'active' : '' ?>" href="<?= base_url('/peminjaman/history') ?>">
+                    <i class="bi bi-clock-history me-3"></i>
+                    <span>Riwayat Saya</span>
                 </a>
             </li>
-        <?php endif; ?>
 
-        <?php if ($role == 'admin') : ?>
-            <div class="nav-divider">Data Master</div>
             <li class="nav-item">
-                <a class="nav-link <?= (uri_string() == 'alat') ? 'active' : '' ?>" href="<?= base_url('/alat') ?>">
-                    <i class="bi bi-tools me-3"></i>
-                    <span>Daftar Alat</span>
+                <a href="<?= base_url('peminjaman/pengembalian') ?>" class="nav-link <?= (uri_string() == 'peminjaman/pengembalian') ? 'active' : '' ?>">
+                    <i class="bi bi-arrow-return-left me-3"></i>
+                    <span>Pengembalian</span>
                 </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link <?= (uri_string() == 'kategori') ? 'active' : '' ?>" href="<?= base_url('/kategori') ?>">
-                    <i class="bi bi-tags-fill me-3"></i>
-                    <span>Kategori Alat</span>
-                </a>
-            </li>
-            <div class="nav-divider">System Management</div>
-            <li class="nav-item">
-                <a class="nav-link <?= (uri_string() == 'users') ? 'active' : '' ?>" href="<?= base_url('/users') ?>">
-                    <i class="bi bi-people-fill me-3"></i>
-                    <span>Manajemen User</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link <?= (uri_string() == 'logs') ? 'active' : '' ?>" href="<?= base_url('/logs') ?>">
-                    <i class="bi bi-journal-text me-3"></i>
-                    <span>Log Aktivitas</span>
-                </a>
-            </li>
-        <?php endif; ?>
 
-        <?php
-        $db = \Config\Database::connect();
-
-        // Ambil Nama Lengkap dari session untuk dicocokkan dengan kolom 'nama_peminjam'
-        $namaUser = session()->get('nama');
-        $currentPinjam = 0;
-
-        if ($namaUser) {
-            // Hitung data di mana nama_peminjam sesuai dan statusnya masih 'dipinjam' atau 'pending'
-            $currentPinjam = $db->table('peminjaman')
-                ->where('nama_peminjam', $namaUser)
-                ->whereIn('status', ['dipinjam', 'pending'])
-                ->countAllResults();
-        }
-
-        $maxAlat = 10;
-        $persen = ($currentPinjam > 0) ? ($currentPinjam / $maxAlat) * 100 : 0;
-        if ($persen > 100) $persen = 100;
-        ?>
-
-        <div class="sidebar-stats-card p-3 rounded-4 bg-primary bg-opacity-10 border border-primary border-opacity-10">
-            <div class="d-flex justify-content-between align-items-center mb-2">
-                <span class="small fw-bold text-primary" style="font-size: 0.75rem;">Status Pinjam</span>
-                <i class="bi bi-info-circle text-primary opacity-50" style="font-size: 0.75rem;"></i>
-            </div>
-
-            <div class="progress mb-2" style="height: 4px; background-color: rgba(67, 97, 238, 0.1);">
-                <div class="progress-bar bg-primary" style="width: <?= $persen ?>%"></div>
-            </div>
-
-            <small class="text-muted" style="font-size: 0.65rem;">
-                <b><?= $currentPinjam ?> alat</b> belum kembali
-            </small>
-        </div>`
-
-        <div class="mt-auto pt-4">
-            <hr class="mx-2 opacity-10">
-            <li class="nav-item">
-                <a class="nav-link <?= (uri_string() == 'help') ? 'active' : '' ?>" href="<?= base_url('/help') ?>">
-                    <i class="bi bi-question-circle-fill me-3"></i>
-                    <span>Pusat Bantuan</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link <?= (uri_string() == 'settings') ? 'active' : '' ?>" href="<?= base_url('/settings') ?>">
-                    <i class="bi bi-gear-fill me-3"></i>
-                    <span>Pengaturan</span>
-                </a>
-            </li>
-            <?php if (session()->get('role') == 'admin') : ?>
+            <?php if ($role == 'admin' || $role == 'petugas') : ?>
+                <div class="nav-divider text-primary">Panel Operasional</div>
                 <li class="nav-item">
-                    <a class="nav-link <?= (uri_string() == 'backup') ? 'active' : '' ?>" href="<?= base_url('/backup') ?>">
-                        <i class="bi bi-cloud-arrow-down-fill me-3"></i>
-                        <span>Backup Database</span>
+                    <a class="nav-link <?= (uri_string() == 'peminjaman/permintaan') ? 'active' : '' ?>" href="<?= base_url('peminjaman/permintaan') ?>">
+                        <i class="bi bi-envelope-paper-fill me-3"></i>
+                        <span>Permintaan Pinjam</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link <?= (uri_string() == 'laporan') ? 'active' : '' ?>" href="<?= base_url('/laporan') ?>">
+                        <i class="bi bi-file-earmark-bar-graph-fill me-3"></i>
+                        <span>Laporan</span>
                     </a>
                 </li>
             <?php endif; ?>
-            <li class="nav-item">
-                <a class="nav-link logout-btn text-danger fw-bold" href="<?= base_url('/logout') ?>">
-                    <i class="bi bi-box-arrow-right me-3"></i> Keluar Sistem
-                </a>
-            </li>
-        </div>
-    </ul>
+
+            <?php if ($role == 'admin') : ?>
+                <div class="nav-divider">Data Master</div>
+                <li class="nav-item">
+                    <a class="nav-link <?= (uri_string() == 'alat') ? 'active' : '' ?>" href="<?= base_url('/alat') ?>">
+                        <i class="bi bi-tools me-3"></i>
+                        <span>Daftar Alat</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link <?= (uri_string() == 'kategori') ? 'active' : '' ?>" href="<?= base_url('/kategori') ?>">
+                        <i class="bi bi-tags-fill me-3"></i>
+                        <span>Kategori Alat</span>
+                    </a>
+                </li>
+                <div class="nav-divider">System Management</div>
+                <li class="nav-item">
+                    <a class="nav-link <?= (uri_string() == 'users') ? 'active' : '' ?>" href="<?= base_url('/users') ?>">
+                        <i class="bi bi-people-fill me-3"></i>
+                        <span>Manajemen User</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link <?= (uri_string() == 'logs') ? 'active' : '' ?>" href="<?= base_url('/logs') ?>">
+                        <i class="bi bi-journal-text me-3"></i>
+                        <span>Log Aktivitas</span>
+                    </a>
+                </li>
+            <?php endif; ?>
+
+            <?php
+            $db = \Config\Database::connect();
+            $namaUser = session()->get('nama');
+            $role = session()->get('role'); // Ambil role dari session
+            $currentPinjam = 0;
+
+            if ($namaUser) {
+                $builder = $db->table('peminjaman');
+
+                // JIKA ADMIN: Hitung SEMUA yang statusnya belum kembali
+                if ($role == 'admin') {
+                    $currentPinjam = $builder->whereIn('status', ['dipinjam', 'pending'])
+                        ->countAllResults();
+                }
+                // JIKA USER: Hanya hitung miliknya sendiri
+                else {
+                    $currentPinjam = $builder->where('nama_peminjam', $namaUser)
+                        ->whereIn('status', ['dipinjam', 'pending'])
+                        ->countAllResults();
+                }
+            }
+
+            $maxAlat = 10;
+            $persen = ($currentPinjam > 0) ? ($currentPinjam / $maxAlat) * 100 : 0;
+            if ($persen > 100) $persen = 100;
+            ?>
+
+            <div class="sidebar-stats-card p-3 rounded-4 bg-primary bg-opacity-10 border border-primary border-opacity-10">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span class="small fw-bold text-primary" style="font-size: 0.75rem;">Status Pinjam</span>
+                    <i class="bi bi-info-circle text-primary opacity-50" style="font-size: 0.75rem;"></i>
+                </div>
+
+                <div class="progress mb-2" style="height: 4px; background-color: rgba(67, 97, 238, 0.1);">
+                    <div class="progress-bar bg-primary" style="width: <?= $persen ?>%"></div>
+                </div>
+
+                <small class="text-muted" style="font-size: 0.65rem;">
+                    <b><?= $currentPinjam ?> alat</b> belum kembali
+                </small>
+            </div>`
+
+            <div class="mt-auto pt-4">
+                <hr class="mx-2 opacity-10">
+                <li class="nav-item">
+                    <a class="nav-link <?= (uri_string() == 'help') ? 'active' : '' ?>" href="<?= base_url('/help') ?>">
+                        <i class="bi bi-question-circle-fill me-3"></i>
+                        <span>Pusat Bantuan</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link <?= (uri_string() == 'settings') ? 'active' : '' ?>" href="<?= base_url('/settings') ?>">
+                        <i class="bi bi-gear-fill me-3"></i>
+                        <span>Pengaturan</span>
+                    </a>
+                </li>
+                <?php if (session()->get('role') == 'admin') : ?>
+                    <li class="nav-item">
+                        <a class="nav-link <?= (uri_string() == 'backup') ? 'active' : '' ?>" href="<?= base_url('/backup') ?>">
+                            <i class="bi bi-cloud-arrow-down-fill me-3"></i>
+                            <span>Backup Database</span>
+                        </a>
+                    </li>
+                <?php endif; ?>
+                <li class="nav-item">
+                    <a class="nav-link logout-btn text-danger fw-bold" href="<?= base_url('/logout') ?>">
+                        <i class="bi bi-box-arrow-right me-3"></i> Keluar Sistem
+                    </a>
+                </li>
+            </div>
+        </ul>
+    </div>
 </div>
 
 <style>
