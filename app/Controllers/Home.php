@@ -16,11 +16,10 @@ class Home extends BaseController
         $alatModel = new AlatModel();
         $pinjamModel = new PeminjamanModel();
 
-        // 3. Catat aktivitas ke Log (Contoh: Mencatat akses dashboard)
-        // Ini akan muncul di halaman Log Aktivitas kamu
+        // 3. Catat aktivitas ke Log
         panggil_log('AKSES DASHBOARD', 'User membuka halaman Dashboard utama');
 
-        // 4. Siapkan data (Mempertahankan variabel asli kamu)
+        // 4. Siapkan data lokal untuk halaman Dashboard
         $data = [
             'title'             => 'Dashboard Pengelola',
             'totalAlat'         => $alatModel->countAll(),
@@ -40,7 +39,8 @@ class Home extends BaseController
                 ->findAll()
         ];
 
-        // 5. Kirim data ke view dashboard
-        return view('layouts/dashboard', $data);
+        // 5. Kirim data ke view dashboard dengan menggabungkan data global dari BaseController
+        // array_merge($this->data, $data) memastikan widget sidebar mendapatkan angka real-time
+        return view('layouts/dashboard', array_merge($this->data, $data));
     }
 }

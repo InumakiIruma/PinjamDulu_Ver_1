@@ -98,3 +98,6 @@ $routes->get('/restore/form', 'Restore::form');
 $routes->post('/restore/process', 'Restore::process');
 /////////////////////////////////////////////////
 $routes->get('help', 'Help::index');
+
+$routes->post('auth/register', 'Auth::register');
+$routes->get('auth/verify_page', 'Auth::verify_page');

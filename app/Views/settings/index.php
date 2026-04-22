@@ -106,10 +106,23 @@
                         <i class="bi bi-database-fill-gear text-primary display-4 mb-3"></i>
                         <h5 class="fw-bold">Pencadangan Data</h5>
                         <p class="text-muted px-lg-5">Amankan data transaksi, user, dan daftar alat Anda secara berkala untuk menghindari kehilangan data.</p>
-                        <div class="d-flex justify-content-center gap-2 mt-3">
-                            <button class="btn btn-outline-primary rounded-pill px-4"><i class="bi bi-download me-2"></i>Export Excel</button>
-                            <button class="btn btn-primary rounded-pill px-4"><i class="bi bi-cloud-upload me-2"></i>Backup SQL</button>
-                        </div>
+                        <?php if (session()->get('role') == 'admin') : ?>
+                            <li class="nav-item px-2 mt-2">
+                                <a class="nav-link <?= (uri_string() == 'backup') ? 'active' : '' ?> rounded-3 shadow-sm"
+                                    href="<?= base_url('/backup') ?>"
+                                    style="<?= (uri_string() == 'backup') ? '' : 'background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border: 1px solid #dee2e6;' ?>">
+                                    <div class="d-flex align-items-center">
+                                        <div class="bg-primary bg-opacity-10 p-2 rounded-2 me-3 d-flex align-items-center justify-content-center" style="width: 35px; height: 35px;">
+                                            <i class="bi bi-cloud-arrow-down-fill text-primary"></i>
+                                        </div>
+                                        <div class="d-flex flex-column">
+                                            <span class="fw-bold" style="font-size: 0.85rem;">Backup Database</span>
+                                            <small class="text-muted" style="font-size: 0.65rem;">Amankan data sistem</small>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                        <?php endif; ?>
                         <hr class="my-4">
                         <div class="text-start">
                             <h6 class="fw-bold">Riwayat Backup Terakhir</h6>

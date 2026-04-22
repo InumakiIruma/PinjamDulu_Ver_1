@@ -133,18 +133,40 @@
             </li>
         <?php endif; ?>
 
-        <div class="mt-4 px-2 d-none d-md-block">
-            <div class="sidebar-stats-card p-3 rounded-4 bg-primary bg-opacity-10 border border-primary border-opacity-10">
-                <div class="d-flex justify-content-between align-items-center mb-2">
-                    <span class="small fw-bold text-primary" style="font-size: 0.75rem;">Status Pinjam</span>
-                    <i class="bi bi-info-circle text-primary opacity-50" style="font-size: 0.75rem;"></i>
-                </div>
-                <div class="progress mb-2" style="height: 4px; background-color: rgba(67, 97, 238, 0.1);">
-                    <div class="progress-bar bg-primary" style="width: 60%"></div>
-                </div>
-                <small class="text-muted" style="font-size: 0.65rem;"><b>3 alat</b> belum kembali</small>
+        <?php
+        $db = \Config\Database::connect();
+
+        // Ambil Nama Lengkap dari session untuk dicocokkan dengan kolom 'nama_peminjam'
+        $namaUser = session()->get('nama');
+        $currentPinjam = 0;
+
+        if ($namaUser) {
+            // Hitung data di mana nama_peminjam sesuai dan statusnya masih 'dipinjam' atau 'pending'
+            $currentPinjam = $db->table('peminjaman')
+                ->where('nama_peminjam', $namaUser)
+                ->whereIn('status', ['dipinjam', 'pending'])
+                ->countAllResults();
+        }
+
+        $maxAlat = 10;
+        $persen = ($currentPinjam > 0) ? ($currentPinjam / $maxAlat) * 100 : 0;
+        if ($persen > 100) $persen = 100;
+        ?>
+
+        <div class="sidebar-stats-card p-3 rounded-4 bg-primary bg-opacity-10 border border-primary border-opacity-10">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="small fw-bold text-primary" style="font-size: 0.75rem;">Status Pinjam</span>
+                <i class="bi bi-info-circle text-primary opacity-50" style="font-size: 0.75rem;"></i>
             </div>
-        </div>
+
+            <div class="progress mb-2" style="height: 4px; background-color: rgba(67, 97, 238, 0.1);">
+                <div class="progress-bar bg-primary" style="width: <?= $persen ?>%"></div>
+            </div>
+
+            <small class="text-muted" style="font-size: 0.65rem;">
+                <b><?= $currentPinjam ?> alat</b> belum kembali
+            </small>
+        </div>`
 
         <div class="mt-auto pt-4">
             <hr class="mx-2 opacity-10">
