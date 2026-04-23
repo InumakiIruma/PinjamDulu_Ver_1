@@ -246,20 +246,23 @@
 
 <div class="modal fade" id="modalTambahAlat" tabindex="-1" aria-labelledby="modalTambahAlatLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content border-0 shadow-lg">
+        <div class="modal-content border-0 shadow-lg overflow-hidden">
             <div class="modal-header text-white border-0 py-4" style="background: linear-gradient(to right, #4361ee, #4cc9f0);">
                 <h5 class="modal-title fw-bold" id="modalTambahAlatLabel"><i class="bi bi-box-seam me-2"></i>Tambah Inventaris Alat</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="<?= base_url('/alat/simpan') ?>" method="post">
+
+            <form action="<?= base_url('/alat/simpan') ?>" method="post" enctype="multipart/form-data">
                 <?= csrf_field() ?>
                 <div class="modal-body p-4">
+
                     <div class="mb-3">
-                        <label class="form-label fw-bold text-dark">Nama Alat</label>
+                        <label class="form-label fw-bold text-dark small text-uppercase">Nama Alat</label>
                         <input type="text" name="nama_alat" class="form-control" placeholder="Contoh: Kamera Sony A6400" required>
                     </div>
+
                     <div class="mb-3">
-                        <label class="form-label fw-bold text-dark">Kategori</label>
+                        <label class="form-label fw-bold text-dark small text-uppercase">Kategori</label>
                         <select name="kategori" class="form-select" required>
                             <option value="">-- Pilih Kategori --</option>
                             <option value="Elektronik">Elektronik</option>
@@ -268,19 +271,34 @@
                             <option value="Lainnya">Lainnya</option>
                         </select>
                     </div>
+
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label class="form-label fw-bold text-dark">Stok Awal</label>
+                            <label class="form-label fw-bold text-dark small text-uppercase">Stok Awal</label>
                             <input type="number" name="stok" class="form-control" value="1" min="1" required>
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label class="form-label fw-bold text-dark">Status Awal</label>
+                            <label class="form-label fw-bold text-dark small text-uppercase">Status Awal</label>
                             <select name="status" class="form-select">
                                 <option value="Tersedia">Tersedia</option>
                                 <option value="Perbaikan">Perbaikan</option>
                             </select>
                         </div>
                     </div>
+
+                    <div class="mb-0">
+                        <label class="form-label fw-bold text-dark small text-uppercase">Foto Alat</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light border-end-0"><i class="bi bi-image text-primary"></i></span>
+                            <input type="file" name="foto" id="inputFotoDashboard" class="form-control border-start-0" accept="image/*">
+                        </div>
+                        <div id="previewArea" class="mt-3 d-none text-center bg-light p-3 rounded-3 border border-dashed">
+                            <p class="small text-muted mb-2">Preview Foto:</p>
+                            <img id="imgPreviewDashboard" src="#" alt="Preview" class="img-fluid rounded shadow-sm" style="max-height: 150px;">
+                        </div>
+                        <small class="text-muted d-block mt-2">Format: JPG, JPEG, PNG (Maks. 2MB)</small>
+                    </div>
+
                 </div>
                 <div class="modal-footer border-0 p-4 pt-0">
                     <button type="button" class="btn btn-light rounded-pill px-4 fw-bold" data-bs-dismiss="modal">Batal</button>
@@ -290,5 +308,30 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.getElementById('inputFotoDashboard').onchange = evt => {
+        const [file] = document.getElementById('inputFotoDashboard').files;
+        const previewArea = document.getElementById('previewArea');
+        const imgPreview = document.getElementById('imgPreviewDashboard');
+
+        if (file) {
+            imgPreview.src = URL.createObjectURL(file);
+            previewArea.classList.remove('d-none');
+        } else {
+            previewArea.classList.add('d-none');
+        }
+    }
+</script>
+
+<style>
+    .border-dashed {
+        border-style: dashed !important;
+    }
+
+    .shadow-primary {
+        box-shadow: 0 4px 15px rgba(67, 97, 238, 0.4);
+    }
+</style>
 
 <?= $this->endSection() ?>

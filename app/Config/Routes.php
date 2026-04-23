@@ -106,3 +106,9 @@ $routes->get('auth/verify_page', 'Auth::verify_page');
 // BENAR: Taruh readAll di atas route yang ada ID-nya
 $routes->get('notifikasi/readAll', 'Notifikasi::readAll');
 $routes->get('notifikasi/read/(:num)', 'Notifikasi::read/$1');
+
+// Pastikan ini ada agar URL alat/tambah bisa diakses
+$routes->get('alat/tambah', 'Alat::tambah');
+
+// Jika Anda menggunakan filter atau grup, pastikan berada di dalam grup yang benar
+$routes->post('alat/simpan', 'Alat::simpan'); // Untuk proses simpan fotonya nanti

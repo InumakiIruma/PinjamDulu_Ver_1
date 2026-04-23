@@ -16,6 +16,11 @@ class Alat extends BaseController
 
         return view('alat/index', $data);
     }
+    public function tambah()
+    {
+        // Tampilkan view form tambah alat
+        return view('alat/tambah_alat');
+    }
 
     public function simpan()
     {

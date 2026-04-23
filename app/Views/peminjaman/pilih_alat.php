@@ -4,7 +4,12 @@
 <div class="container mt-4 pb-5">
     <div class="row mb-4 align-items-end">
         <div class="col-lg-5">
-            <h3 class="fw-bold text-dark"><i class="bi bi-cart-plus me-2 text-primary"></i>Pilih Alat untuk Dipinjam</h3>
+            <div class="d-flex align-items-center justify-content-between justify-content-lg-start gap-3 mb-2">
+                <h3 class="fw-bold text-dark mb-0"><i class="bi bi-cart-plus me-2 text-primary"></i>Pilih Alat untuk Dipinjam</h3>
+                <button id="btnShare" class="btn btn-outline-primary btn-sm rounded-pill px-3 shadow-sm transition-base">
+                    <i class="bi bi-share me-1"></i> Bagikan
+                </button>
+            </div>
             <p class="text-muted mb-0">Katalog alat tersedia. Silakan pilih item yang ingin Anda pinjam.</p>
         </div>
         <div class="col-lg-7 mt-3 mt-lg-0">
@@ -17,7 +22,6 @@
                         <select id="categoryFilter" class="form-select border-0 py-2" style="box-shadow: none; cursor: pointer;">
                             <option value="">Semua Kategori</option>
                             <?php
-                            // Mengambil daftar kategori unik dari array alat
                             $categories = array_unique(array_column($alat, 'kategori'));
                             sort($categories);
                             foreach ($categories as $cat) :
@@ -64,7 +68,14 @@
             <div class="col-sm-6 col-md-4 col-lg-3 mb-4 item-alat">
                 <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden card-hover">
                     <div class="bg-light d-flex align-items-center justify-content-center position-relative" style="height: 180px;">
-                        <i class="bi bi-tools text-muted opacity-25" style="font-size: 4rem;"></i>
+                        <?php if (!empty($a['foto']) && file_exists('uploads/alat/' . $a['foto'])) : ?>
+                            <img src="<?= base_url('uploads/alat/' . $a['foto']) ?>"
+                                alt="<?= $a['nama_alat'] ?>"
+                                class="w-100 h-100"
+                                style="object-fit: cover;">
+                        <?php else : ?>
+                            <i class="bi bi-tools text-muted opacity-25" style="font-size: 4rem;"></i>
+                        <?php endif; ?>
 
                         <?php if ($a['stok'] <= 0) : ?>
                             <div class="position-absolute top-0 start-0 w-100 h-100 bg-dark bg-opacity-50 d-flex align-items-center justify-content-center" style="z-index: 1;">
@@ -72,7 +83,7 @@
                             </div>
                         <?php endif; ?>
 
-                        <div class="position-absolute top-0 end-0 m-3">
+                        <div class="position-absolute top-0 end-0 m-3" style="z-index: 2;">
                             <span class="badge bg-white text-dark shadow-sm opacity-75">#ALT-<?= str_pad($a['id'], 3, '0', STR_PAD_LEFT); ?></span>
                         </div>
                     </div>
@@ -171,12 +182,39 @@
 </div>
 
 <script>
+    // FITUR SHARE (BAGIKAN)
+    document.getElementById('btnShare').addEventListener('click', async () => {
+        const shareData = {
+            title: 'Pinjam Alat - Katalog Inventaris',
+            text: 'Lihat katalog alat yang tersedia untuk dipinjam di sini.',
+            url: window.location.href
+        };
+
+        try {
+            if (navigator.share) {
+                await navigator.share(shareData);
+            } else {
+                await navigator.clipboard.writeText(window.location.href);
+                const btn = document.getElementById('btnShare');
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '<i class="bi bi-check2"></i> Tautan Tersalin';
+                btn.classList.replace('btn-outline-primary', 'btn-success');
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.classList.replace('btn-success', 'btn-outline-primary');
+                }, 2000);
+            }
+        } catch (err) {
+            console.error('Gagal membagikan:', err);
+        }
+    });
+
+    // LOGIKA FILTER & MODAL
     const searchInput = document.getElementById('searchInput');
     const categoryFilter = document.getElementById('categoryFilter');
     const items = document.querySelectorAll('.item-alat');
     const noResults = document.getElementById('noResults');
 
-    // FUNGSI FILTER GABUNGAN (SEARCH & CATEGORY)
     function filterAlat() {
         const keyword = searchInput.value.toLowerCase();
         const selectedCat = categoryFilter.value.toLowerCase();
@@ -185,7 +223,6 @@
         items.forEach(item => {
             const nama = item.querySelector('.nama-alat').textContent.toLowerCase();
             const kategori = item.querySelector('.kategori-alat').textContent.toLowerCase().trim();
-
             const matchSearch = nama.includes(keyword);
             const matchCategory = selectedCat === "" || kategori === selectedCat;
 
@@ -204,11 +241,9 @@
         }
     }
 
-    // Listener untuk Input & Dropdown
     searchInput.addEventListener('input', filterAlat);
     categoryFilter.addEventListener('change', filterAlat);
 
-    // FUNGSI MODAL
     function setAlat(id, nama, stok) {
         document.getElementById('id_alat').value = id;
         document.getElementById('nama_alat_display').value = nama;
@@ -246,9 +281,39 @@
         transform: scale(0.96);
     }
 
-    /* Perbaikan tampilan select agar tidak kaku */
     .form-select {
         background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%234361ee' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+    }
+
+    .btn-success {
+        background-color: #2ec4b6 !important;
+        border-color: #2ec4b6 !important;
+        color: white !important;
+    }
+
+    /* ANIMASI GAMBAR */
+    .card-hover img {
+        transition: transform 0.5s ease;
+    }
+
+    .card-hover:hover img {
+        transform: scale(1.1);
+    }
+
+    .bg-light {
+        overflow: hidden;
+    }
+
+    /* Overlay halus untuk ID Badge */
+    .bg-light::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 40px;
+        background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1), transparent);
+        pointer-events: none;
     }
 </style>
 
