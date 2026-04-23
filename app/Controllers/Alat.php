@@ -24,17 +24,23 @@ class Alat extends BaseController
 
     public function simpan()
     {
-        $model = new AlatModel();
+        $fileFoto = $this->request->getFile('foto');
+        $namaFoto = null;
 
-        $model->save([
+        if ($fileFoto && $fileFoto->isValid() && !$fileFoto->hasMoved()) {
+            $namaFoto = $fileFoto->getRandomName();
+            // PINDAHKAN KE FOLDER PUBLIC
+            $fileFoto->move(FCPATH . 'uploads/alat', $namaFoto);
+        }
+
+        $this->alatModel->save([
             'nama_alat' => $this->request->getPost('nama_alat'),
             'kategori'  => $this->request->getPost('kategori'),
             'stok'      => $this->request->getPost('stok'),
-            'status'    => $this->request->getPost('status'),
-            'foto'      => 'default.jpg'
+            'foto'      => $namaFoto // Simpan nama file ini
         ]);
 
-        return redirect()->to('/alat')->with('success', 'Alat baru berhasil ditambahkan!');
+        return redirect()->back()->with('success', 'Alat berhasil ditambah');
     }
 
     public function edit($id)
