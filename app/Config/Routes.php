@@ -112,3 +112,5 @@ $routes->get('alat/tambah', 'Alat::tambah');
 
 // Jika Anda menggunakan filter atau grup, pastikan berada di dalam grup yang benar
 $routes->post('alat/simpan', 'Alat::simpan'); // Untuk proses simpan fotonya nanti
+/////oijwhdfiuhw
+$routes->get('alat/delete/(:num)', 'Alat::delete/$1');

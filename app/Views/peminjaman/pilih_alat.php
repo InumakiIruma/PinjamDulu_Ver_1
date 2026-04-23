@@ -67,14 +67,21 @@
         <?php foreach ($alat as $a): ?>
             <div class="col-sm-6 col-md-4 col-lg-3 mb-4 item-alat">
                 <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden card-hover">
-                    <div class="bg-light d-flex align-items-center justify-content-center position-relative" style="height: 180px;">
-                        <?php if (!empty($a['foto']) && file_exists('uploads/alat/' . $a['foto'])) : ?>
-                            <img src="<?= base_url('uploads/alat/' . $a['foto']) ?>"
+                    <div class="bg-light d-flex align-items-center justify-content-center position-relative" style="height: 180px; overflow: hidden;">
+
+                        <?php
+                        $pathFoto = 'uploads/alat/' . $a['foto'];
+                        // Gunakan FCPATH untuk pengecekan file fisik
+                        if (!empty($a['foto']) && file_exists(FCPATH . $pathFoto)) : ?>
+                            <img src="<?= base_url($pathFoto) ?>"
                                 alt="<?= $a['nama_alat'] ?>"
                                 class="w-100 h-100"
                                 style="object-fit: cover;">
                         <?php else : ?>
-                            <i class="bi bi-tools text-muted opacity-25" style="font-size: 4rem;"></i>
+                            <div class="text-center">
+                                <i class="bi bi-image text-muted opacity-25" style="font-size: 3.5rem;"></i>
+                                <p class="small text-muted opacity-50 mb-0">No Image</p>
+                            </div>
                         <?php endif; ?>
 
                         <?php if ($a['stok'] <= 0) : ?>
