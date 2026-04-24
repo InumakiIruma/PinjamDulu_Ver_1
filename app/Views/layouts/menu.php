@@ -18,8 +18,8 @@
             </div>
         </div>
 
-        <div class="nav-item list-unstyled mb-4">
-            <a href="<?= base_url('/profile') ?>" class="text-decoration-none d-block profile-card-link">
+        <div class="px-2 mb-4 dropdown">
+            <a href="#" class="text-decoration-none d-block profile-card-link dropdown-toggle" id="dropdownProfile" data-bs-toggle="dropdown" aria-expanded="false">
                 <div class="profile-card d-flex align-items-center p-3 rounded-4 shadow-sm border-0">
                     <div class="position-relative flex-shrink-0">
                         <img src="<?= base_url('uploads/users/' . (session()->get('foto') ?: 'default.png')) ?>"
@@ -28,7 +28,7 @@
                         <span class="status-online-dot"></span>
                     </div>
 
-                    <div class="ms-3 flex-grow-1 overflow-hidden">
+                    <div class="ms-3 flex-grow-1 overflow-hidden text-start">
                         <p class="mb-0 fw-bold text-dark small text-truncate">
                             <?= session()->get('nama') ?: 'Guest' ?>
                         </p>
@@ -37,13 +37,38 @@
                         $badgeClass = ($role == 'admin') ? 'bg-primary' : (($role == 'petugas') ? 'bg-success' : 'bg-secondary');
                         ?>
                         <span class="badge <?= $badgeClass ?> bg-opacity-10 text-<?= str_replace('bg-', '', $badgeClass) ?> border-0 fw-bold" style="font-size: 0.65rem; padding: 4px 8px;">
-                            <i class="bi <?= ($role == 'admin') ? 'bi-shield-lock' : (($role == 'petugas') ? 'bi-person-badge' : 'bi-person') ?> me-1"></i>
                             <?= strtoupper($role ?: 'GUEST') ?>
                         </span>
                     </div>
-                    <i class="bi bi-chevron-right text-muted extra-small ms-1"></i>
+                    <i class="bi bi-chevron-down text-muted extra-small ms-1"></i>
                 </div>
             </a>
+
+            <ul class="dropdown-menu shadow border-0 rounded-4 w-100 mt-2 py-2" aria-labelledby="dropdownProfile">
+                <li>
+                    <a class="dropdown-item py-2 px-3" href="<?= base_url('/profile') ?>">
+                        <i class="bi bi-person-gear me-2 text-primary"></i> Edit Profil
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item py-2 px-3" href="<?= base_url('/help') ?>">
+                        <i class="bi bi-question-circle me-2 text-success"></i> Pusat Bantuan
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item py-2 px-3" href="<?= base_url('/settings') ?>">
+                        <i class="bi bi-gear me-2 text-secondary"></i> Pengaturan
+                    </a>
+                </li>
+                <li>
+                    <hr class="dropdown-divider opacity-50">
+                </li>
+                <li>
+                    <a class="dropdown-item py-2 px-3 text-danger fw-bold" href="<?= base_url('/logout') ?>">
+                        <i class="bi bi-box-arrow-right me-2"></i> Keluar Sistem
+                    </a>
+                </li>
+            </ul>
         </div>
 
         <ul class="nav flex-column custom-nav">
@@ -54,13 +79,22 @@
                 </a>
             </li>
 
+            <?php
+            // Logika tambahan untuk menghitung yang telat (hanya untuk Admin/Petugas)
+            $peminjamanModel = new \App\Models\PeminjamanModel();
+            $jumlahTelat = $peminjamanModel->where('status', 'dipinjam')
+                ->where('tgl_kembali <', date('Y-m-d'))
+                ->countAllResults();
+            $totalDisplayNotif = ($totalNotif ?? 0) + $jumlahTelat;
+            ?>
+
             <li class="nav-item">
                 <a class="nav-link <?= (uri_string() == 'notifikasi') ? 'active' : '' ?>" href="<?= base_url('notifikasi') ?>">
                     <div class="position-relative d-flex align-items-center">
                         <i class="bi bi-bell-fill me-3"></i>
-                        <?php if (isset($totalNotif) && $totalNotif > 0) : ?>
+                        <?php if ($totalDisplayNotif > 0) : ?>
                             <span class="notif-dot badge rounded-pill bg-danger border border-white">
-                                <?= $totalNotif ?>
+                                <?= $totalDisplayNotif ?>
                             </span>
                         <?php endif; ?>
                     </div>
@@ -83,7 +117,8 @@
             </li>
 
             <li class="nav-item">
-                <a href="<?= base_url('peminjaman/pengembalian') ?>" class="nav-link <?= (uri_string() == 'peminjaman/pengembalian') ? 'active' : '' ?>">
+                <a href="<?= base_url('peminjaman/pengembalian') ?>"
+                    class="nav-link <?= (uri_string() == 'peminjaman/pengembalian') ? 'active' : '' ?>">
                     <i class="bi bi-arrow-return-left me-3"></i>
                     <span>Pengembalian</span>
                 </a>
@@ -117,6 +152,12 @@
                     <a class="nav-link <?= (uri_string() == 'kategori') ? 'active' : '' ?>" href="<?= base_url('/kategori') ?>">
                         <i class="bi bi-tags-fill me-3"></i>
                         <span>Kategori Alat</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="<?= base_url('peminjaman/daftar_denda') ?>" class="nav-link">
+                        <i class="bi bi-cash-stack me-3"></i>
+                        <span>Tagihan Denda</span>
                     </a>
                 </li>
                 <div class="nav-divider">System Management</div>
@@ -175,37 +216,12 @@
                     <b><?= $currentPinjam ?> alat</b> belum kembali
                 </small>
             </div>`
-
-            <div class="mt-auto pt-4">
-                <hr class="mx-2 opacity-10">
-                <li class="nav-item">
-                    <a class="nav-link <?= (uri_string() == 'help') ? 'active' : '' ?>" href="<?= base_url('/help') ?>">
-                        <i class="bi bi-question-circle-fill me-3"></i>
-                        <span>Pusat Bantuan</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link <?= (uri_string() == 'settings') ? 'active' : '' ?>" href="<?= base_url('/settings') ?>">
-                        <i class="bi bi-gear-fill me-3"></i>
-                        <span>Pengaturan</span>
-                    </a>
-                </li>
-                <?php if (session()->get('role') == 'admin') : ?>
-                    <li class="nav-item">
-                        <a class="nav-link <?= (uri_string() == 'backup') ? 'active' : '' ?>" href="<?= base_url('/backup') ?>">
-                            <i class="bi bi-cloud-arrow-down-fill me-3"></i>
-                            <span>Backup Database</span>
-                        </a>
-                    </li>
-                <?php endif; ?>
-                <li class="nav-item">
-                    <a class="nav-link logout-btn text-danger fw-bold" href="<?= base_url('/logout') ?>">
-                        <i class="bi bi-box-arrow-right me-3"></i> Keluar Sistem
-                    </a>
-                </li>
-            </div>
         </ul>
     </div>
+</div>
+</ul>
+
+</div>
 </div>
 
 <style>
@@ -387,5 +403,38 @@
         margin: 1rem 0;
         border-color: #f1f5f9;
         opacity: 1;
+    }
+
+    /* Menghilangkan panah bawaan bootstrap pada profile card */
+    .profile-card-link::after {
+        display: none !important;
+    }
+
+    /* Animasi halus untuk dropdown menu */
+    .dropdown-menu {
+        animation: slideUp 0.3s ease;
+        border: 1px solid #f1f5f9 !important;
+    }
+
+    @keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .dropdown-item {
+        font-size: 0.85rem;
+        transition: all 0.2s;
+    }
+
+    .dropdown-item:hover {
+        background-color: #f8fafc;
+        transform: translateX(5px);
     }
 </style>

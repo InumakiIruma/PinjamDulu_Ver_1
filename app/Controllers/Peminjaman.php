@@ -9,30 +9,25 @@ class Peminjaman extends BaseController
 {
     protected $alatModel;
     protected $peminjamanModel;
-    protected $db; // Tambahan properti DB
+    protected $db;
 
     public function __construct()
     {
-        $this->db = \Config\Database::connect(); // Inisialisasi DB
+        $this->db = \Config\Database::connect();
         $this->alatModel = new AlatModel();
         $this->peminjamanModel = new PeminjamanModel();
     }
 
-    /**
-     * FUNGSI TAMBAHAN: Simpan ke tabel notifikasi
-     */
     private function simpanNotif($id_user, $pesan)
     {
         $this->db->table('notifikasi')->insert([
-            'id_user' => $id_user,
-            'pesan'   => $pesan,
-            'is_read' => 0
+            'id_user'    => $id_user,
+            'pesan'      => $pesan,
+            'is_read'    => 0,
+            'created_at' => date('Y-m-d H:i:s')
         ]);
     }
 
-    /**
-     * 1. Halaman Pilih Alat (Sisi User)
-     */
     public function index()
     {
         $data = [
@@ -42,9 +37,6 @@ class Peminjaman extends BaseController
         return view('peminjaman/pilih_alat', $data);
     }
 
-    /**
-     * 2. Proses Simpan Pinjaman Awal (Status: Pending)
-     */
     public function proses()
     {
         $id_alat = $this->request->getPost('id_alat');
@@ -61,12 +53,11 @@ class Peminjaman extends BaseController
             return redirect()->back()->with('error', 'Jumlah pinjam melebihi stok yang tersedia.');
         }
 
-        // Ambil ID User dari Session
         $id_user_peminjam = session()->get('id') ?? session()->get('id_user');
 
         $dataSimpan = [
             'id_alat'       => $id_alat,
-            'id_user'       => $id_user_peminjam, // Pastikan kolom id_user ada di tabel peminjaman
+            'id_user'       => $id_user_peminjam,
             'nama_peminjam' => $nama,
             'tgl_pinjam'    => $this->request->getPost('tgl_pinjam'),
             'tgl_kembali'   => $this->request->getPost('tgl_kembali'),
@@ -75,29 +66,16 @@ class Peminjaman extends BaseController
         ];
 
         if ($this->peminjamanModel->save($dataSimpan)) {
-            $namaAlat = $alat['nama_alat'];
-
-            // NOTIF UNTUK USER (Peminjam)
-            if ($id_user_peminjam) {
-                $this->simpanNotif($id_user_peminjam, "Anda telah mengajukan peminjaman alat: $namaAlat. Silakan tunggu konfirmasi admin.");
-            }
-
-            // NOTIF UNTUK SEMUA ADMIN
             $adminList = $this->db->table('users')->where('role', 'admin')->get()->getResultArray();
             foreach ($adminList as $admin) {
-                $this->simpanNotif($admin['id'], "Permintaan Baru: $nama ingin meminjam $namaAlat ($jumlah unit).");
+                $this->simpanNotif($admin['id'], "Permintaan Baru: $nama ingin meminjam " . $alat['nama_alat']);
             }
-
-            return redirect()->to('/peminjaman')
-                ->with('success', 'Peminjaman alat berhasil diajukan! Admin telah dinotifikasi.');
+            return redirect()->to('/peminjaman')->with('success', 'Peminjaman diajukan.');
         }
 
         return redirect()->back()->with('error', 'Gagal mengajukan peminjaman.');
     }
 
-    /**
-     * 3. Halaman Daftar Permintaan Pinjam (Sisi Admin)
-     */
     public function permintaan()
     {
         $data = [
@@ -107,21 +85,16 @@ class Peminjaman extends BaseController
                 ->where('peminjaman.status', 'pending')
                 ->findAll()
         ];
-
         return view('peminjaman/permintaan', $data);
     }
 
-    /**
-     * 4. Proses Konfirmasi Admin (Update Status: Dipinjam & Kurangi Stok)
-     */
     public function konfirmasi($id)
     {
         $this->db->transStart();
-
         $dataPinjam = $this->peminjamanModel->find($id);
 
         if (!$dataPinjam || strtolower($dataPinjam['status']) !== 'pending') {
-            return redirect()->back()->with('error', 'Data tidak valid atau sudah diproses.');
+            return redirect()->back()->with('error', 'Data tidak valid.');
         }
 
         $alat = $this->alatModel->find($dataPinjam['id_alat']);
@@ -132,29 +105,19 @@ class Peminjaman extends BaseController
                 'tgl_pinjam' => date('Y-m-d H:i:s')
             ]);
 
-            $stokBaru = $alat['stok'] - $dataPinjam['jumlah'];
-            $this->alatModel->update($dataPinjam['id_alat'], ['stok' => $stokBaru]);
+            $this->alatModel->update($dataPinjam['id_alat'], ['stok' => $alat['stok'] - $dataPinjam['jumlah']]);
 
-            // NOTIF UNTUK USER: Bahwa pinjaman disetujui
             if (!empty($dataPinjam['id_user'])) {
-                $this->simpanNotif($dataPinjam['id_user'], "Peminjaman alat " . $alat['nama_alat'] . " telah DISETUJUI. Silakan ambil barang.");
+                $this->simpanNotif($dataPinjam['id_user'], "Peminjaman " . $alat['nama_alat'] . " DISETUJUI.");
             }
 
             $this->db->transComplete();
-
-            if ($this->db->transStatus() === FALSE) {
-                return redirect()->back()->with('error', 'Gagal memproses data.');
-            }
-
-            return redirect()->to('/peminjaman/permintaan')->with('success', 'Peminjaman disetujui.');
-        } else {
-            return redirect()->back()->with('error', 'Stok alat tidak mencukupi!');
+            return redirect()->to('/peminjaman/permintaan')->with('success', 'Disetujui.');
         }
+
+        return redirect()->back()->with('error', 'Stok tidak mencukupi.');
     }
 
-    /**
-     * 5. Halaman Daftar Pengembalian (Status: Dipinjam)
-     */
     public function pengembalian()
     {
         $data = [
@@ -164,54 +127,63 @@ class Peminjaman extends BaseController
                 ->where('peminjaman.status', 'dipinjam')
                 ->findAll()
         ];
-
         return view('peminjaman/pengembalian', $data);
     }
 
     /**
-     * 6. Proses Pengembalian (Update Status: Selesai & Tambah Stok)
+     * FIX: Fungsi tunggal untuk proses pengembalian + Hitung Denda
      */
-    public function kembalikan($id)
+    public function proses_kembali($id)
     {
-        $dataPinjam = $this->peminjamanModel->find($id);
+        $peminjaman = $this->peminjamanModel->find($id);
 
-        if (!$dataPinjam || strtolower($dataPinjam['status']) !== 'dipinjam') {
-            return redirect()->to('/peminjaman/pengembalian')->with('error', 'Data tidak ditemukan.');
-        }
+        // Ambil tanggal saja (Y-m-d) tanpa jam
+        $tgl_harus_kembali = date('Y-m-d', strtotime($peminjaman['tgl_kembali']));
+        $tgl_sekarang      = date('Y-m-d');
 
-        $this->peminjamanModel->update($id, [
-            'status'      => 'selesai',
-            'tgl_kembali' => date('Y-m-d H:i:s')
-        ]);
+        $denda = 0;
+        $status_denda = 'lunas';
 
-        $alat = $this->alatModel->find($dataPinjam['id_alat']);
-        if ($alat) {
-            $stokBaru = $alat['stok'] + $dataPinjam['jumlah'];
-            $this->alatModel->update($dataPinjam['id_alat'], ['stok' => $stokBaru]);
+        // Perbandingan: Jika hari ini melewati deadline
+        if ($tgl_sekarang > $tgl_harus_kembali) {
+            $awal  = new \DateTime($tgl_harus_kembali);
+            $akhir = new \DateTime($tgl_sekarang);
+            $diff  = $awal->diff($akhir);
 
-            // NOTIF UNTUK USER: Bahwa barang sudah kembali
-            if (!empty($dataPinjam['id_user'])) {
-                $this->simpanNotif($dataPinjam['id_user'], "Pengembalian alat " . $alat['nama_alat'] . " telah diterima. Terima kasih!");
+            $selisih_hari = $diff->days;
+
+            if ($selisih_hari > 0) {
+                $denda = $selisih_hari * 5000; // Rp 5.000 per hari
+                $status_denda = 'belum_bayar';
             }
         }
 
-        return redirect()->to('/peminjaman/pengembalian')->with('success', 'Alat berhasil dikembalikan.');
-    }
+        // UPDATE DATABASE
+        $this->peminjamanModel->update($id, [
+            'status'               => 'selesai',
+            'tanggal_dikembalikan' => date('Y-m-d H:i:s'),
+            'denda'                => $denda,
+            'status_denda'         => $status_denda
+        ]);
 
-    /**
-     * 7. Halaman Riwayat & Detail
-     */
-    public function history()
+        // Kembalikan Stok Alat
+        $alat = $this->alatModel->find($peminjaman['id_alat']);
+        $this->alatModel->update($peminjaman['id_alat'], ['stok' => $alat['stok'] + $peminjaman['jumlah']]);
+
+        return redirect()->to('/peminjaman/pengembalian')->with('success', 'Alat kembali. Denda: Rp ' . number_format($denda));
+    }
+    public function daftar_denda()
     {
         $data = [
-            'title'      => 'Riwayat Transaksi',
-            'peminjaman' => $this->peminjamanModel->select('peminjaman.*, alat.nama_alat, alat.kategori')
+            'title' => 'Tagihan Denda',
+            // Filter: Hanya yang dendanya di atas 0 DAN statusnya belum_bayar
+            'denda' => $this->peminjamanModel->select('peminjaman.*, alat.nama_alat')
                 ->join('alat', 'alat.id = peminjaman.id_alat')
-                ->orderBy('peminjaman.id', 'DESC')
+                ->where('peminjaman.denda >', 0)
+                ->where('peminjaman.status_denda', 'belum_bayar')
                 ->findAll()
         ];
-
-        return view('peminjaman/history', $data);
+        return view('peminjaman/daftar_denda', $data);
     }
 
     public function detail($id)
@@ -234,17 +206,12 @@ class Peminjaman extends BaseController
         $dataPinjam = $this->peminjamanModel->find($id);
 
         if ($dataPinjam && $dataPinjam['status'] == 'pending') {
-            $alat = $this->alatModel->find($dataPinjam['id_alat']);
-
-            // NOTIF UNTUK USER: Bahwa pinjaman ditolak
             if (!empty($dataPinjam['id_user'])) {
-                $this->simpanNotif($dataPinjam['id_user'], "Maaf, permintaan pinjam " . ($alat['nama_alat'] ?? 'alat') . " DITOLAK.");
+                $this->simpanNotif($dataPinjam['id_user'], "Maaf, permintaan pinjam alat DITOLAK.");
             }
-
             $this->peminjamanModel->delete($id);
             return redirect()->to('/peminjaman/permintaan')->with('success', 'Permintaan telah ditolak.');
         }
-
-        return redirect()->back()->with('error', 'Gagal memproses penolakan.');
+        return redirect()->back()->with('error', 'Gagal memproses.');
     }
 }

@@ -84,6 +84,11 @@
         padding: 0.5rem 1rem;
         font-weight: 600;
     }
+
+    .text-denda {
+        color: #ef4444;
+        font-weight: 700;
+    }
 </style>
 
 <div class="container mt-4 pb-5">
@@ -92,7 +97,7 @@
             <h4 class="fw-bold text-dark mb-1">
                 <i class="bi bi-clock-history me-2 text-primary"></i>Riwayat Transaksi
             </h4>
-            <p class="text-muted small mb-0">Daftar riwayat peminjaman alat Anda.</p>
+            <p class="text-muted small mb-0">Daftar riwayat peminjaman alat dan status denda Anda.</p>
         </div>
         <div>
             <button onclick="window.print()" class="btn btn-print rounded-pill px-4 shadow-sm">
@@ -109,8 +114,8 @@
                         <th class="ps-4 text-center" width="5%">No</th>
                         <th>Peminjam</th>
                         <th>Alat & Kategori</th>
-                        <th class="text-center">Jumlah</th>
                         <th class="text-center">Status</th>
+                        <th class="text-center">Denda</th>
                         <th>Tgl Pinjam</th>
                         <th class="pe-4 text-center btn-detail">Aksi</th>
                     </tr>
@@ -131,12 +136,7 @@
                                 <td class="fw-bold text-dark"><?= $row['nama_peminjam'] ?></td>
                                 <td>
                                     <div class="fw-medium"><?= $row['nama_alat'] ?></div>
-                                    <small class="text-muted"><?= $row['kategori'] ?></small>
-                                </td>
-                                <td class="text-center">
-                                    <span class="badge bg-light text-dark border rounded-pill px-3">
-                                        <?= $row['jumlah'] ?> Unit
-                                    </span>
+                                    <small class="text-muted"><?= $row['kategori'] ?> (<?= $row['jumlah'] ?> Unit)</small>
                                 </td>
                                 <td class="text-center">
                                     <?php if ($row['status'] == 'pending') : ?>
@@ -145,6 +145,16 @@
                                         <span class="badge badge-status bg-primary rounded-pill">Dipinjam</span>
                                     <?php else : ?>
                                         <span class="badge badge-status bg-success rounded-pill">Selesai</span>
+                                    <?php endif; ?>
+                                </td>
+                                <td class="text-center">
+                                    <?php if (isset($row['denda']) && $row['denda'] > 0) : ?>
+                                        <div class="text-denda small">Rp <?= number_format($row['denda'], 0, ',', '.') ?></div>
+                                        <span class="badge bg-<?= ($row['status_denda'] == 'lunas') ? 'success' : 'danger' ?> px-2 py-1" style="font-size: 0.65rem;">
+                                            <?= strtoupper($row['status_denda']) ?>
+                                        </span>
+                                    <?php else : ?>
+                                        <span class="text-muted small">-</span>
                                     <?php endif; ?>
                                 </td>
                                 <td class="small text-secondary">

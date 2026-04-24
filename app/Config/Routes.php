@@ -114,3 +114,10 @@ $routes->get('alat/tambah', 'Alat::tambah');
 $routes->post('alat/simpan', 'Alat::simpan'); // Untuk proses simpan fotonya nanti
 /////oijwhdfiuhw
 $routes->get('alat/delete/(:num)', 'Alat::delete/$1');
+///iwufiweugfiuwgefliwef
+// Tambahkan baris ini di app/Config/Routes.php
+$routes->get('peminjaman/proses_kembali/(:num)', 'Peminjaman::proses_kembali/$1');
+
+///////////////uwdgfkuegfuegyf
+$routes->get('peminjaman/daftar_denda', 'Peminjaman::daftar_denda');
+$routes->get('peminjaman/bayar_denda/(:num)', 'Peminjaman::bayar_denda/$1');
