@@ -121,3 +121,5 @@ $routes->get('peminjaman/proses_kembali/(:num)', 'Peminjaman::proses_kembali/$1'
 ///////////////uwdgfkuegfuegyf
 $routes->get('peminjaman/daftar_denda', 'Peminjaman::daftar_denda');
 $routes->get('peminjaman/bayar_denda/(:num)', 'Peminjaman::bayar_denda/$1');
+////ufiwegfuiwebfiue
+$routes->get('peminjaman/history', 'Peminjaman::history');

@@ -174,13 +174,16 @@ class Peminjaman extends BaseController
     }
     public function daftar_denda()
     {
+        // Coba ambil semua data tanpa filter dulu untuk debug
+        $semua_data = $this->peminjamanModel->findAll();
+
+        // Debug: Hapus komentar baris di bawah ini untuk melihat isi database di layar
+        // dd($semua_data); 
+
         $data = [
             'title' => 'Tagihan Denda',
-            // Filter: Hanya yang dendanya di atas 0 DAN statusnya belum_bayar
-            'denda' => $this->peminjamanModel->select('peminjaman.*, alat.nama_alat')
-                ->join('alat', 'alat.id = peminjaman.id_alat')
-                ->where('peminjaman.denda >', 0)
-                ->where('peminjaman.status_denda', 'belum_bayar')
+            'denda' => $this->peminjamanModel->where('denda >', 0)
+                ->where('status_denda', 'belum_bayar')
                 ->findAll()
         ];
         return view('peminjaman/daftar_denda', $data);
@@ -213,5 +216,33 @@ class Peminjaman extends BaseController
             return redirect()->to('/peminjaman/permintaan')->with('success', 'Permintaan telah ditolak.');
         }
         return redirect()->back()->with('error', 'Gagal memproses.');
+    }
+    public function history()
+    {
+        $data = [
+            'title'      => 'Riwayat Peminjaman',
+            // UBAH: dari 'history' menjadi 'peminjaman' agar sesuai dengan View
+            'peminjaman' => $this->peminjamanModel->select('peminjaman.*, alat.nama_alat, alat.kategori')
+                ->join('alat', 'alat.id = peminjaman.id_alat')
+                ->where('peminjaman.status', 'selesai')
+                ->orderBy('peminjaman.tanggal_dikembalikan', 'DESC') // Urutkan berdasarkan waktu kembali asli
+                ->findAll()
+        ];
+
+        return view('peminjaman/history', $data);
+    }
+    public function bayar_denda($id)
+    {
+        $peminjaman = $this->peminjamanModel->find($id);
+
+        if ($peminjaman) {
+            $this->peminjamanModel->update($id, [
+                'status_denda' => 'lunas'
+            ]);
+
+            return redirect()->to('/peminjaman/daftar_denda')->with('success', 'Pembayaran denda atas nama ' . $peminjaman['nama_peminjam'] . ' telah dikonfirmasi.');
+        }
+
+        return redirect()->back()->with('error', 'Data tidak ditemukan.');
     }
 }

@@ -10,8 +10,18 @@ class PeminjamanModel extends Model
     protected $primaryKey = 'id';
 
     // FIX: Menambahkan 'jumlah' ke dalam daftar agar bisa dibaca di View
-    protected $allowedFields = ['id_alat', 'nama_peminjam', 'tgl_pinjam', 'tgl_kembali', 'status', 'jumlah'];
-
+    // File: app/Models/PeminjamanModel.php
+    protected $allowedFields = [
+        'id_alat',
+        'nama_peminjam',
+        'jumlah',
+        'tgl_pinjam',
+        'tgl_kembali',
+        'status',
+        'tanggal_dikembalikan',
+        'denda',
+        'status_denda' // <--- PASTIKAN INI ADA
+    ];
     public function getPeminjamanLimit($limit)
     {
         return $this->db->table('peminjaman')
