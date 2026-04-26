@@ -56,7 +56,7 @@
             <li>
                 <hr class="dropdown-divider opacity-50">
             </li>
-            <li><a class="dropdown-item py-2 px-3 text-danger fw-bold" href="<?= base_url('/logout') ?>"><i class="bi bi-box-arrow-right me-2"></i> Keluar Sistem</a></li>
+            <li><a class="dropdown-item py-2 px-3 text-danger fw-bold logout-btn" href="<?= base_url('/logout') ?>"><i class="bi bi-box-arrow-right me-2"></i> Keluar Sistem</a></li>
         </ul>
     </div>
 
@@ -96,6 +96,12 @@
         <li class="nav-item">
             <a class="nav-link <?= (uri_string() == 'peminjaman/history') ? 'active' : '' ?>" href="<?= base_url('/peminjaman/history') ?>">
                 <i class="bi bi-clock-history me-3"></i> <span class="nav-text">Riwayat Saya</span>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link <?= (uri_string() == 'peminjaman/pengembalian') ? 'active' : '' ?>" href="<?= base_url('peminjaman/pengembalian') ?>">
+                <i class="bi bi-arrow-return-left me-3"></i> <span class="nav-text">Form Pengembalian</span>
             </a>
         </li>
 
