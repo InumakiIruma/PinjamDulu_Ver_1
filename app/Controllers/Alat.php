@@ -41,6 +41,9 @@ class Alat extends BaseController
             if (!is_dir(FCPATH . 'uploads/alat')) {
                 mkdir(FCPATH . 'uploads/alat', 0777, true);
             }
+            if (session()->get('role') != 'admin') {
+                return redirect()->to('/dashboard')->with('error', 'Anda tidak memiliki akses untuk menambah alat.');
+            }
 
             $namaFoto = $fileFoto->getRandomName();
             $fileFoto->move(FCPATH . 'uploads/alat', $namaFoto);

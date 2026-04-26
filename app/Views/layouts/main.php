@@ -12,9 +12,6 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <style>
-        /* =========================================
-        MAIN LAYOUT PREMIUM REFINEMENT
-        ========================================= */
         :root {
             --primary-blue: #4361ee;
             --soft-bg: #f8fafc;
@@ -24,6 +21,7 @@
             --text-muted: #64748b;
             --border-color: rgba(0, 0, 0, 0.05);
             --sidebar-width: 280px;
+            --sidebar-collapsed-width: 85px;
             --input-bg: #ffffff;
         }
 
@@ -43,36 +41,51 @@
             color: var(--text-main);
             margin: 0;
             overflow-x: hidden;
-            transition: background-color 0.3s ease, color 0.3s ease;
+            transition: background-color 0.3s ease;
+        }
+
+        /* --- WRAPPER UTAMA --- */
+        .main-wrapper {
+            display: flex;
+            width: 100%;
+            align-items: stretch;
+            min-height: 100vh;
         }
 
         /* --- SIDEBAR REFINEMENT --- */
         .sidebar {
             width: var(--sidebar-width);
             background-color: var(--sidebar-bg) !important;
-            position: fixed;
-            /* Berubah jadi fixed agar bisa di-slide di HP */
+            /* Ubah ke sticky agar tetap ikut scroll tapi dalam flow flex */
+            position: sticky;
             top: 0;
-            left: 0;
             height: 100vh;
             border-right: 1px solid var(--border-color);
             z-index: 1050;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             overflow-y: auto;
+            flex-shrink: 0;
+            /* Mencegah sidebar gepeng */
         }
 
         /* --- CONTENT AREA --- */
         .content {
             flex-grow: 1;
+            /* Mengambil sisa ruang */
+            min-width: 0;
+            /* Penting agar konten di dalam flex tidak overflow */
             padding: 2rem;
-            margin-left: var(--sidebar-width);
-            /* Beri ruang untuk sidebar */
             min-height: 100vh;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             animation: fadeIn 0.5s ease-out;
         }
 
-        /* --- MOBILE NAVIGATION BAR (Muncul hanya di HP) --- */
+        /* LOGIKA COLLAPSE DESKTOP */
+        #sidebar.collapsed {
+            width: var(--sidebar-collapsed-width);
+        }
+
+        /* --- MOBILE NAVIGATION BAR --- */
         .mobile-nav {
             display: none;
             background-color: var(--sidebar-bg);
@@ -85,7 +98,6 @@
             justify-content: space-between;
         }
 
-        /* Overlay saat sidebar terbuka di HP */
         .sidebar-overlay {
             display: none;
             position: fixed;
@@ -100,36 +112,34 @@
 
         /* --- RESPONSIVE LOGIC --- */
         @media (max-width: 992px) {
+            .main-wrapper {
+                flex-direction: column;
+                /* Stack vertikal di mobile */
+            }
+
             .sidebar {
+                position: fixed;
+                /* Kembali ke fixed untuk efek slide-in mobile */
                 transform: translateX(-100%);
-                /* Sembunyikan sidebar ke kiri */
+                width: var(--sidebar-width) !important;
             }
 
             .sidebar.active {
                 transform: translateX(0);
-                /* Munculkan saat diklik */
             }
 
             .content {
-                margin-left: 0;
-                /* Konten penuhi layar di HP */
                 padding: 1rem;
+                width: 100%;
             }
 
             .mobile-nav {
                 display: flex;
-                /* Aktifkan nav atas di HP */
             }
 
             .sidebar-overlay.active {
                 display: block;
             }
-        }
-
-        /* Dark Mode Clean-up */
-        [data-theme="dark"] .sidebar,
-        [data-theme="dark"] .mobile-nav {
-            background-color: var(--sidebar-bg) !important;
         }
 
         @keyframes fadeIn {
@@ -164,42 +174,44 @@
         </div>
     </div>
 
-    <div id="sidebar" class="sidebar shadow-sm">
-        <div class="d-lg-none p-3 text-end">
-            <button class="btn-close" id="btnClose"></button>
+    <div class="main-wrapper">
+        <div id="sidebar" class="sidebar shadow-sm">
+            <?php include(APPPATH . 'Views/layouts/menu.php'); ?>
         </div>
-        <?php include(APPPATH . 'Views/layouts/menu.php'); ?>
-    </div>
 
-    <div class="content">
-        <?= $this->renderSection('content') ?>
+        <div id="main-content" class="content">
+            <?= $this->renderSection('content') ?>
+        </div>
     </div>
 
     <script src="<?= base_url('assets/js/bootstrap.bundle.min.js') ?>"></script>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // --- 1. LOGIKA RESPONSIVE MENU ---
             const sidebar = document.getElementById('sidebar');
             const overlay = document.getElementById('sidebarOverlay');
-            const btnToggle = document.getElementById('btnToggle');
-            const btnClose = document.getElementById('btnClose');
+            const btnToggleMobile = document.getElementById('btnToggle');
 
-            function toggleSidebar() {
+            // 1. Sinkronisasi status collapse Desktop
+            if (localStorage.getItem('sidebarStatus') === 'collapsed' && window.innerWidth >= 992) {
+                sidebar.classList.add('collapsed');
+            }
+
+            // 2. Logic Toggle Mobile
+            function toggleSidebarMobile() {
                 sidebar.classList.toggle('active');
                 overlay.classList.toggle('active');
             }
 
-            if (btnToggle) btnToggle.addEventListener('click', toggleSidebar);
-            if (btnClose) btnClose.addEventListener('click', toggleSidebar);
-            if (overlay) overlay.addEventListener('click', toggleSidebar);
+            if (btnToggleMobile) btnToggleMobile.addEventListener('click', toggleSidebarMobile);
+            if (overlay) overlay.addEventListener('click', toggleSidebarMobile);
 
-            // --- 2. LOGIKA LOGOUT (Sesuai Kode Anda) ---
-            const logoutButtons = document.querySelectorAll('.logout-btn');
-            logoutButtons.forEach(button => {
-                button.addEventListener('click', function(e) {
+            // 3. Logic Logout dengan SweetAlert2
+            document.addEventListener('click', function(e) {
+                const logoutBtn = e.target.closest('.logout-btn');
+                if (logoutBtn) {
                     e.preventDefault();
-                    const url = this.getAttribute('href');
+                    const url = logoutBtn.getAttribute('href');
                     Swal.fire({
                         title: 'Yakin ingin keluar?',
                         text: "Sesi Anda akan diakhiri sekarang.",
@@ -211,10 +223,10 @@
                     }).then((result) => {
                         if (result.isConfirmed) window.location.href = url;
                     });
-                });
+                }
             });
 
-            // --- 3. LOGIKA DARK MODE (Sesuai Kode Anda) ---
+            // 4. Logic Dark Mode
             const themeToggles = document.querySelectorAll('.theme-toggle-btn');
             themeToggles.forEach(toggle => {
                 toggle.addEventListener('click', function() {
