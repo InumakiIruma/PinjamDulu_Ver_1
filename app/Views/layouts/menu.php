@@ -1,5 +1,11 @@
 <div id="sidebar" class="sidebar no-print">
     <div class="sidebar-wrapper py-4 px-3 d-flex flex-column h-100">
+
+        <div class="d-flex d-lg-none justify-content-between align-items-center p-3 border-bottom mb-3">
+            <span class="fw-bold text-primary">Menu Navigasi</span>
+            <button class="btn-close" id="closeSidebar"></button>
+        </div>
+
         <div class="brand-section mb-4 ps-2">
             <a class="text-decoration-none d-flex align-items-center" href="<?= base_url('/') ?>">
                 <div class="brand-icon-box shadow-primary flex-shrink-0 me-2">
@@ -45,29 +51,13 @@
             </a>
 
             <ul class="dropdown-menu shadow border-0 rounded-4 w-100 mt-2 py-2" aria-labelledby="dropdownProfile">
-                <li>
-                    <a class="dropdown-item py-2 px-3" href="<?= base_url('/profile') ?>">
-                        <i class="bi bi-person-gear me-2 text-primary"></i> Edit Profil
-                    </a>
-                </li>
-                <li>
-                    <a class="dropdown-item py-2 px-3" href="<?= base_url('/help') ?>">
-                        <i class="bi bi-question-circle me-2 text-success"></i> Pusat Bantuan
-                    </a>
-                </li>
-                <li>
-                    <a class="dropdown-item py-2 px-3" href="<?= base_url('/settings') ?>">
-                        <i class="bi bi-gear me-2 text-secondary"></i> Pengaturan
-                    </a>
-                </li>
+                <li><a class="dropdown-item py-2 px-3" href="<?= base_url('/profile') ?>"><i class="bi bi-person-gear me-2 text-primary"></i> Edit Profil</a></li>
+                <li><a class="dropdown-item py-2 px-3" href="<?= base_url('/help') ?>"><i class="bi bi-question-circle me-2 text-success"></i> Pusat Bantuan</a></li>
+                <li><a class="dropdown-item py-2 px-3" href="<?= base_url('/settings') ?>"><i class="bi bi-gear me-2 text-secondary"></i> Pengaturan</a></li>
                 <li>
                     <hr class="dropdown-divider opacity-50">
                 </li>
-                <li>
-                    <a class="dropdown-item py-2 px-3 text-danger fw-bold" href="<?= base_url('/logout') ?>">
-                        <i class="bi bi-box-arrow-right me-2"></i> Keluar Sistem
-                    </a>
-                </li>
+                <li><a class="dropdown-item py-2 px-3 text-danger fw-bold" href="<?= base_url('/logout') ?>"><i class="bi bi-box-arrow-right me-2"></i> Keluar Sistem</a></li>
             </ul>
         </div>
 
@@ -80,11 +70,8 @@
             </li>
 
             <?php
-            // Logika tambahan untuk menghitung yang telat (hanya untuk Admin/Petugas)
             $peminjamanModel = new \App\Models\PeminjamanModel();
-            $jumlahTelat = $peminjamanModel->where('status', 'dipinjam')
-                ->where('tgl_kembali <', date('Y-m-d'))
-                ->countAllResults();
+            $jumlahTelat = $peminjamanModel->where('status', 'dipinjam')->where('tgl_kembali <', date('Y-m-d'))->countAllResults();
             $totalDisplayNotif = ($totalNotif ?? 0) + $jumlahTelat;
             ?>
 
@@ -93,9 +80,7 @@
                     <div class="position-relative d-flex align-items-center">
                         <i class="bi bi-bell-fill me-3"></i>
                         <?php if ($totalDisplayNotif > 0) : ?>
-                            <span class="notif-dot badge rounded-pill bg-danger border border-white">
-                                <?= $totalDisplayNotif ?>
-                            </span>
+                            <span class="notif-dot badge rounded-pill bg-danger border border-white"><?= $totalDisplayNotif ?></span>
                         <?php endif; ?>
                     </div>
                     <span>Notifikasi</span>
@@ -105,22 +90,17 @@
             <div class="nav-divider">Transaksi</div>
             <li class="nav-item">
                 <a class="nav-link <?= (uri_string() == 'peminjaman') ? 'active' : '' ?>" href="<?= base_url('/peminjaman') ?>">
-                    <i class="bi bi-cart-plus-fill me-3"></i>
-                    <span>Pilih Alat</span>
+                    <i class="bi bi-cart-plus-fill me-3"></i> <span>Pilih Alat</span>
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link <?= (uri_string() == 'peminjaman/history') ? 'active' : '' ?>" href="<?= base_url('/peminjaman/history') ?>">
-                    <i class="bi bi-clock-history me-3"></i>
-                    <span>Riwayat Saya</span>
+                    <i class="bi bi-clock-history me-3"></i> <span>Riwayat Saya</span>
                 </a>
             </li>
-
             <li class="nav-item">
-                <a href="<?= base_url('peminjaman/pengembalian') ?>"
-                    class="nav-link <?= (uri_string() == 'peminjaman/pengembalian') ? 'active' : '' ?>">
-                    <i class="bi bi-arrow-return-left me-3"></i>
-                    <span>Pengembalian</span>
+                <a href="<?= base_url('peminjaman/pengembalian') ?>" class="nav-link <?= (uri_string() == 'peminjaman/pengembalian') ? 'active' : '' ?>">
+                    <i class="bi bi-arrow-return-left me-3"></i> <span>Pengembalian</span>
                 </a>
             </li>
 
@@ -128,14 +108,12 @@
                 <div class="nav-divider text-primary">Panel Operasional</div>
                 <li class="nav-item">
                     <a class="nav-link <?= (uri_string() == 'peminjaman/permintaan') ? 'active' : '' ?>" href="<?= base_url('peminjaman/permintaan') ?>">
-                        <i class="bi bi-envelope-paper-fill me-3"></i>
-                        <span>Permintaan Pinjam</span>
+                        <i class="bi bi-envelope-paper-fill me-3"></i> <span>Permintaan Pinjam</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link <?= (uri_string() == 'laporan') ? 'active' : '' ?>" href="<?= base_url('/laporan') ?>">
-                        <i class="bi bi-file-earmark-bar-graph-fill me-3"></i>
-                        <span>Laporan</span>
+                        <i class="bi bi-file-earmark-bar-graph-fill me-3"></i> <span>Laporan</span>
                     </a>
                 </li>
             <?php endif; ?>
@@ -144,33 +122,26 @@
                 <div class="nav-divider">Data Master</div>
                 <li class="nav-item">
                     <a class="nav-link <?= (uri_string() == 'alat') ? 'active' : '' ?>" href="<?= base_url('/alat') ?>">
-                        <i class="bi bi-tools me-3"></i>
-                        <span>Daftar Alat</span>
+                        <i class="bi bi-tools me-3"></i> <span>Daftar Alat</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link <?= (uri_string() == 'kategori') ? 'active' : '' ?>" href="<?= base_url('/kategori') ?>">
-                        <i class="bi bi-tags-fill me-3"></i>
-                        <span>Kategori Alat</span>
+                        <i class="bi bi-tags-fill me-3"></i> <span>Kategori Alat</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="<?= base_url('peminjaman/daftar_denda') ?>" class="nav-link">
-                        <i class="bi bi-cash-stack me-3"></i>
-                        <span>Tagihan Denda</span>
-                    </a>
+                    <a href="<?= base_url('peminjaman/daftar_denda') ?>" class="nav-link"><i class="bi bi-cash-stack me-3"></i> <span>Tagihan Denda</span></a>
                 </li>
                 <div class="nav-divider">System Management</div>
                 <li class="nav-item">
                     <a class="nav-link <?= (uri_string() == 'users') ? 'active' : '' ?>" href="<?= base_url('/users') ?>">
-                        <i class="bi bi-people-fill me-3"></i>
-                        <span>Manajemen User</span>
+                        <i class="bi bi-people-fill me-3"></i> <span>Manajemen User</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link <?= (uri_string() == 'logs') ? 'active' : '' ?>" href="<?= base_url('/logs') ?>">
-                        <i class="bi bi-journal-text me-3"></i>
-                        <span>Log Aktivitas</span>
+                        <i class="bi bi-journal-text me-3"></i> <span>Log Aktivitas</span>
                     </a>
                 </li>
             <?php endif; ?>
@@ -178,51 +149,42 @@
             <?php
             $db = \Config\Database::connect();
             $namaUser = session()->get('nama');
-            $role = session()->get('role'); // Ambil role dari session
             $currentPinjam = 0;
-
             if ($namaUser) {
                 $builder = $db->table('peminjaman');
-
-                // JIKA ADMIN: Hitung SEMUA yang statusnya belum kembali
                 if ($role == 'admin') {
-                    $currentPinjam = $builder->whereIn('status', ['dipinjam', 'pending'])
-                        ->countAllResults();
-                }
-                // JIKA USER: Hanya hitung miliknya sendiri
-                else {
-                    $currentPinjam = $builder->where('nama_peminjam', $namaUser)
-                        ->whereIn('status', ['dipinjam', 'pending'])
-                        ->countAllResults();
+                    $currentPinjam = $builder->whereIn('status', ['dipinjam', 'pending'])->countAllResults();
+                } else {
+                    $currentPinjam = $builder->where('nama_peminjam', $namaUser)->whereIn('status', ['dipinjam', 'pending'])->countAllResults();
                 }
             }
-
             $maxAlat = 10;
             $persen = ($currentPinjam > 0) ? ($currentPinjam / $maxAlat) * 100 : 0;
             if ($persen > 100) $persen = 100;
             ?>
 
-            <div class="sidebar-stats-card p-3 rounded-4 bg-primary bg-opacity-10 border border-primary border-opacity-10">
+            <div class="sidebar-stats-card p-3 rounded-4 bg-primary bg-opacity-10 border border-primary border-opacity-10 mt-3">
                 <div class="d-flex justify-content-between align-items-center mb-2">
                     <span class="small fw-bold text-primary" style="font-size: 0.75rem;">Status Pinjam</span>
                     <i class="bi bi-info-circle text-primary opacity-50" style="font-size: 0.75rem;"></i>
                 </div>
-
                 <div class="progress mb-2" style="height: 4px; background-color: rgba(67, 97, 238, 0.1);">
                     <div class="progress-bar bg-primary" style="width: <?= $persen ?>%"></div>
                 </div>
-
                 <small class="text-muted" style="font-size: 0.65rem;">
                     <b><?= $currentPinjam ?> alat</b> belum kembali
                 </small>
-            </div>`
+            </div>
         </ul>
     </div>
 </div>
-</ul>
 
-</div>
-</div>
+<script>
+    document.getElementById('closeSidebar')?.addEventListener('click', function() {
+        document.getElementById('sidebar').classList.remove('active');
+        document.getElementById('sidebarOverlay').classList.remove('active');
+    });
+</script>
 
 <style>
     /* ORIGINAL STYLE PRESERVED 
