@@ -99,7 +99,7 @@ $routes->get('/restore/form', 'Restore::form');
 $routes->post('/restore/process', 'Restore::process');
 /////////////////////////////////////////////////
 $routes->get('help', 'Help::index');
-
+/// BELUM BERFUNGSI
 $routes->post('auth/register', 'Auth::register');
 $routes->get('auth/verify_page', 'Auth::verify_page');
 
@@ -114,12 +114,17 @@ $routes->get('alat/tambah', 'Alat::tambah');
 $routes->post('alat/simpan', 'Alat::simpan'); // Untuk proses simpan fotonya nanti
 /////oijwhdfiuhw
 $routes->get('alat/delete/(:num)', 'Alat::delete/$1');
-///iwufiweugfiuwgefliwef
+
 // Tambahkan baris ini di app/Config/Routes.php
 $routes->get('peminjaman/proses_kembali/(:num)', 'Peminjaman::proses_kembali/$1');
 
-///////////////uwdgfkuegfuegyf
+///Denda [ BELUM BERFUNGSI ]
 $routes->get('peminjaman/daftar_denda', 'Peminjaman::daftar_denda');
 $routes->get('peminjaman/bayar_denda/(:num)', 'Peminjaman::bayar_denda/$1');
-////ufiwegfuiwebfiue
+
+////History Peminjaman
 $routes->get('peminjaman/history', 'Peminjaman::history');
+
+// bersihkan log aktifitas
+// Tambahkan ini agar URL logs/clear bisa diakses
+$routes->get('logs/clear', 'Log::clear'); // Sesuaikan dengan nama controller log Anda

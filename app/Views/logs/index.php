@@ -1,6 +1,8 @@
 <?= $this->extend('layouts/main') ?>
 <?= $this->section('content') ?>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <div class="container mt-4">
     <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 gap-3">
         <div>
@@ -13,8 +15,8 @@
             <button class="btn btn-light btn-sm rounded-pill px-3 border shadow-sm">
                 <i class="bi bi-download me-1"></i> Ekspor PDF
             </button>
-            <button class="btn btn-outline-danger btn-sm rounded-pill px-3 shadow-sm">
-                <i class="bi bi-trash me-1"></i> Bersihkan Log
+            <button type="button" class="btn btn-danger btn-sm rounded-pill px-3 shadow-sm" onclick="confirmClearLogs()">
+                <i class="bi bi-trash-fill me-1"></i> Bersihkan Semua Log
             </button>
         </div>
     </div>
@@ -43,7 +45,6 @@
                         <?php else : ?>
                             <?php foreach ($logs as $log) : ?>
                                 <?php
-                                // Logika warna badge berdasarkan jenis aksi
                                 $aksi = strtolower($log['aksi']);
                                 $badgeClass = 'bg-secondary';
                                 if (strpos($aksi, 'tambah') !== false || strpos($aksi, 'create') !== false) $badgeClass = 'bg-success';
@@ -90,7 +91,6 @@
 </div>
 
 <style>
-    /* Styling tambahan agar tabel terlihat lebih premium */
     .table thead th {
         font-size: 0.7rem;
         letter-spacing: 0.05em;
@@ -108,5 +108,58 @@
         text-transform: uppercase;
     }
 </style>
+
+<script>
+    function confirmClearLogs() {
+        Swal.fire({
+            title: 'Bersihkan Log?',
+            text: "Semua riwayat aktivitas akan dihapus permanen!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: '<i class="bi bi-trash-fill"></i> Ya, Bersihkan!',
+            cancelButtonText: 'Batal',
+            reverseButtons: true,
+            customClass: {
+                confirmButton: 'btn btn-danger px-4',
+                cancelButton: 'btn btn-light px-4'
+            },
+            buttonsStyling: false
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Sesuaikan URL ini dengan rute di Routes.php Anda
+                window.location.href = "<?= base_url('logs/clear') ?>";
+            }
+        })
+    }
+
+    // Munculkan notifikasi jika ada flashdata 'success' dari controller
+    document.addEventListener('DOMContentLoaded', function() {
+        <?php if (session()->getFlashdata('success')) : ?>
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil!',
+                text: '<?= session()->getFlashdata('success') ?>',
+                timer: 3000,
+                showConfirmButton: false,
+                toast: true,
+                position: 'top-end'
+            });
+        <?php endif; ?>
+
+        <?php if (session()->getFlashdata('error')) : ?>
+            Swal.fire({
+                icon: 'error',
+                title: 'Gagal!',
+                text: '<?= session()->getFlashdata('error') ?>',
+                timer: 3000,
+                showConfirmButton: false,
+                toast: true,
+                position: 'top-end'
+            });
+        <?php endif; ?>
+    });
+</script>
 
 <?= $this->endSection() ?>

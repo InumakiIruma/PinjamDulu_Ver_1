@@ -16,13 +16,6 @@
         </a>
     </div>
 
-    <div class="px-2 mb-4 search-box-container">
-        <div class="search-box-sidebar position-relative">
-            <i class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted" style="font-size: 0.8rem;"></i>
-            <input type="text" class="form-control form-control-sm border-0 bg-light ps-5 rounded-3" placeholder="Cari menu..." style="font-size: 0.85rem; padding: 10px 0 10px 40px;">
-        </div>
-    </div>
-
     <div class="px-2 mb-4 dropdown">
         <a href="#" class="text-decoration-none d-block profile-card-link dropdown-toggle" id="dropdownProfile" data-bs-toggle="dropdown" aria-expanded="false">
             <div class="profile-card d-flex align-items-center p-3 rounded-4 shadow-sm border-0">
@@ -126,6 +119,11 @@
                     <i class="bi bi-people-fill me-3"></i> <span class="nav-text">User Manager</span>
                 </a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link <?= (uri_string() == 'logs') ? 'active' : '' ?>" href="<?= base_url('/logs') ?>">
+                    <i class="bi bi-journal-text me-3"></i> <span class="nav-text">Activity Log</span>
+                </a>
+            </li>
         <?php endif; ?>
 
         <?php
@@ -160,31 +158,28 @@
 </div>
 
 <script>
-    document.getElementById('closeSidebar')?.addEventListener('click', function() {
-        document.getElementById('sidebar').classList.remove('active');
-        document.getElementById('sidebarOverlay').classList.remove('active');
+    document.getElementById('btnClose')?.addEventListener('click', function() {
+        // Menggunakan ID sidebar-wrapper sesuai struktur HTML Anda
+        document.getElementById('sidebar-wrapper').classList.remove('active');
+        document.getElementById('sidebarOverlay')?.classList.remove('active');
     });
+
     document.addEventListener("DOMContentLoaded", function() {
-        const sidebar = document.getElementById('sidebar');
-        const toggleBtn = document.getElementById('sidebarCollapse'); // Tombol di Navbar
-        const content = document.getElementById('main-content'); // Sesuaikan dengan ID kontainer konten Anda
+        const sidebar = document.getElementById('sidebar-wrapper');
+        const toggleBtn = document.getElementById('sidebarCollapse');
+        const content = document.getElementById('main-content');
 
         if (toggleBtn) {
             toggleBtn.addEventListener('click', function() {
                 sidebar.classList.toggle('collapsed');
-
-                // Opsional: Jika Anda ingin konten utama melebar saat sidebar ciut
                 if (content) {
                     content.classList.toggle('sidebar-collapsed');
                 }
-
-                // Simpan status di LocalStorage agar saat refresh halaman tetap collapsed/normal
                 const isCollapsed = sidebar.classList.contains('collapsed');
                 localStorage.setItem('sidebarStatus', isCollapsed ? 'collapsed' : 'normal');
             });
         }
 
-        // Cek status saat halaman dimuat
         if (localStorage.getItem('sidebarStatus') === 'collapsed') {
             sidebar.classList.add('collapsed');
             if (content) content.classList.add('sidebar-collapsed');

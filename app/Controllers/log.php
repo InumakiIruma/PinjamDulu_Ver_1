@@ -19,4 +19,11 @@ class Log extends BaseController
 
         return view('logs/index', $data);
     }
+    public function clear()
+    {
+        $db = \Config\Database::connect();
+        $db->table('logs')->truncate(); // Menghapus semua data dan mereset Auto Increment
+
+        return redirect()->to(base_url('logs'))->with('success', 'Semua log aktivitas telah dibersihkan.');
+    }
 }
