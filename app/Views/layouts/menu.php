@@ -28,14 +28,14 @@
 
                 <div class="ms-3 flex-grow-1 overflow-hidden text-start profile-info">
                     <p class="mb-0 fw-bold text-dark small text-truncate">
-                        <?= session()->get('nama') ?: 'Guest' ?>
+                        <?= session()->get('nama') ?: 'User' ?>
                     </p>
                     <?php
                     $role = session()->get('role');
                     $badgeClass = ($role == 'admin') ? 'bg-primary' : (($role == 'petugas') ? 'bg-success' : 'bg-secondary');
                     ?>
                     <span class="badge <?= $badgeClass ?> bg-opacity-10 text-<?= str_replace('bg-', '', $badgeClass) ?> border-0 fw-bold" style="font-size: 0.65rem; padding: 4px 8px;">
-                        <?= strtoupper($role ?: 'GUEST') ?>
+                        <?= strtoupper($role ?: 'user') ?>
                     </span>
                 </div>
                 <i class="bi bi-chevron-down text-muted extra-small ms-1 dropdown-icon"></i>
@@ -86,6 +86,7 @@
                 <i class="bi bi-cart-plus-fill me-3"></i> <span class="nav-text">Pilih Alat</span>
             </a>
         </li>
+
         <?php if (session()->get('role') == 'admin' || session()->get('role') == 'petugas') : ?>
             <li class="nav-item">
                 <a class="nav-link <?= (uri_string() == 'peminjaman/history') ? 'active' : '' ?>" href="<?= base_url('/peminjaman/history') ?>">
@@ -94,11 +95,12 @@
                 </a>
             </li>
         <?php endif; ?>
-        <?php if (session()->get('role') == 'user') : ?>
+
+        <?php if (session()->get('role') == 'anggota') : ?>
             <li class="nav-item">
-                <a class="nav-link <?= url_is('peminjaman/my_history') ? 'active' : '' ?>" href="<?= base_url('peminjaman/my_history') ?>">
-                    <i class="bi bi-person-lines-fill me-2"></i>
-                    <span>Riwayat Pinjam Saya</span>
+                <a class="nav-link <?= (uri_string() == 'peminjaman/my_history') ? 'active' : '' ?>" href="<?= base_url('peminjaman/my_history') ?>">
+                    <i class="bi bi-person-lines-fill me-3"></i>
+                    <span class="nav-text">Riwayat Pinjam Saya</span>
                 </a>
             </li>
         <?php endif; ?>
@@ -116,17 +118,16 @@
                     <i class="bi bi-envelope-paper-fill me-3"></i> <span class="nav-text">Permintaan</span>
                 </a>
             </li>
-        <?php endif; ?>
-        <ul class="nav">
+
             <?php if (session()->get('role') == 'admin') : ?>
                 <li class="nav-item">
                     <a class="nav-link <?= (uri_string() == 'denda') ? 'active' : '' ?>" href="<?= base_url('denda') ?>">
-                        <i class="bi bi-cash-stack me-2"></i>
-                        <span>Data Denda</span>
+                        <i class="bi bi-cash-stack me-3"></i>
+                        <span class="nav-text">Data Denda</span>
                     </a>
                 </li>
             <?php endif; ?>
-        </ul>
+        <?php endif; ?>
 
         <?php if ($role == 'admin') : ?>
             <div class="nav-divider">Data Master</div>

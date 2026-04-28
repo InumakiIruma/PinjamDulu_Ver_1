@@ -7,13 +7,15 @@ use CodeIgniter\Controller;
 
 class Auth extends Controller
 {
-    // Menampilkan halaman view/auth/login
     public function login()
     {
+        // Jika sudah login, langsung lempar ke dashboard agar tidak login dua kali
+        if (session()->get('logged_in')) {
+            return redirect()->to('/dashboard');
+        }
         return view('auth/login');
     }
 
-    // Memproses data login yang diinput pada halaman login
     public function prosesLogin()
     {
         $session = session();
@@ -24,29 +26,33 @@ class Auth extends Controller
         $users = $usersModel->getUsersByUsername($username);
 
         if ($users) {
+            // Verifikasi password
             if (password_verify($password, $users['password'])) {
-                $session->set([
-                    'id' => $users['id'],
-                    'nama' => $users['nama'],
-                    'email' => $users['email'],
-                    'username' => $users['username'],
-                    'role' => $users['role'],
-                    'foto' => $users['foto'],
+
+                // Menyiapkan data session sesuai struktur tabel database Anda
+                $sessionData = [
+                    'id'        => $users['id'],
+                    'nama'      => $users['nama'], // Pastikan di sidebar panggil session()->get('nama')
+                    'email'     => $users['email'],
+                    'username'  => $users['username'],
+                    'role'      => $users['role'], // Isinya: 'admin', 'petugas', atau 'anggota'
+                    'foto'      => $users['foto'],
                     'logged_in' => true
-                ]);
+                ];
+
+                $session->set($sessionData);
 
                 return redirect()->to('/dashboard');
             } else {
                 $session->setFlashdata('salahpw', 'Password salah');
-                return redirect()->to('/login');
+                return redirect()->to('/login')->withInput();
             }
         } else {
-            $session->setFlashdata('error', 'Nama tidak ditemukan');
-            return redirect()->to('/login');
+            $session->setFlashdata('error', 'Username tidak ditemukan');
+            return redirect()->to('/login')->withInput();
         }
     }
 
-    // Logout (keluar dari aplikasi)
     public function logout()
     {
         session()->destroy();

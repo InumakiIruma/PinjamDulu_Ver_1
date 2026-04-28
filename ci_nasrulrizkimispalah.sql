@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 26, 2026 at 09:54 AM
+-- Generation Time: Apr 28, 2026 at 01:06 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -42,21 +42,30 @@ CREATE TABLE `alat` (
 --
 
 INSERT INTO `alat` (`id`, `nama_alat`, `kategori`, `stok`, `status`, `foto`, `created_at`) VALUES
-(1, 'Laptop', NULL, 1, 'Tersedia', 'default.jpg', '2026-04-11 13:40:41'),
-(2, 'mouse', 'Elektronik', 1, 'Tersedia', 'default.jpg', '2026-04-11 13:43:49'),
-(3, 'kamera', 'Kamera', 10, 'Tersedia', 'default.jpg', '2026-04-11 22:33:11'),
-(4, 'wer', NULL, 100, 'Tersedia', 'default.jpg', '2026-04-12 01:03:52'),
-(5, 'Laptop', 'Elektronik', 10, 'Tersedia', 'default.jpg', '2026-04-12 12:43:29'),
-(6, 'sekop', 'Pertukangan', 15, 'Tersedia', 'default.jpg', '2026-04-16 09:13:47'),
-(7, 'Handphone', 'Elektronik', 50, 'Tersedia', 'default.jpg', '2026-04-16 09:14:31'),
-(8, 'knfgojneg', 'Lainnya', 2147483647, 'Tersedia', 'default.jpg', '2026-04-17 14:41:51'),
-(9, 'gfiberg', 'Kamera', 10, 'Tersedia', 'default.jpg', '2026-04-20 22:12:00'),
-(10, 'GREFG', 'Lainnya', 1, 'Tersedia', 'default.jpg', '2026-04-21 12:55:06'),
-(11, 'Laptop', NULL, 1, 'Tersedia', 'default.jpg', '2026-04-23 23:09:29'),
-(12, 'Laptop', 'Elektronik', 1, 'Tersedia', 'default.jpg', '2026-04-23 23:19:30'),
-(13, 'wefwf', 'Kamera', 1, 'Tersedia', 'default.jpg', '2026-04-23 23:39:10'),
-(14, 'qwer', 'Elektronik', 1, 'Tersedia', 'default.jpg', '2026-04-23 23:44:40'),
-(16, 'HEHEHAH', 'Lainnya', 1, 'Tersedia', '1776963746_a7303eca846503d9d7e8.jpg', '2026-04-24 00:02:26');
+(18, 'Microsoft Surface Laptop 7. Edition 13.8', 'Elektronik', 0, 'Tersedia', '1777343203_2126d2871062537ab253.avif', '2026-04-28 09:26:43');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `denda`
+--
+
+CREATE TABLE `denda` (
+  `id` int(11) UNSIGNED NOT NULL,
+  `id_peminjaman` int(11) UNSIGNED NOT NULL,
+  `jumlah_denda` int(11) NOT NULL,
+  `keterangan` text DEFAULT NULL,
+  `status_pembayaran` enum('Belum Bayar','Lunas') DEFAULT 'Belum Bayar',
+  `tanggal_dibuat` datetime DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `denda`
+--
+
+INSERT INTO `denda` (`id`, `id_peminjaman`, `jumlah_denda`, `keterangan`, `status_pembayaran`, `tanggal_dibuat`) VALUES
+(1, 57, 75000, 'Denda: Telat Rp25,000 (Rusak). Catatan: -', 'Lunas', '2026-04-28 05:13:08'),
+(2, 61, 100000, 'Kondisi Hilang (Rp 100,000). Catatan: UIEWRF U83CGRFVUIE', 'Lunas', '2026-04-28 09:04:29');
 
 -- --------------------------------------------------------
 
@@ -100,174 +109,69 @@ CREATE TABLE `logs` (
 --
 
 INSERT INTO `logs` (`id`, `user_id`, `aksi`, `keterangan`, `ip_address`, `created_at`) VALUES
-(1, 1, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-21 06:18:25'),
-(2, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-21 06:18:46'),
-(3, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-21 06:19:07'),
-(4, 1, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-21 06:22:31'),
-(5, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-21 06:28:01'),
-(6, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-21 06:40:25'),
-(7, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-21 06:40:46'),
-(8, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-21 06:45:17'),
-(9, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-21 06:47:14'),
-(10, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-21 06:49:24'),
-(11, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-21 06:50:32'),
-(12, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-21 06:53:58'),
-(13, 1, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-21 06:56:32'),
-(14, 1, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-21 06:57:13'),
-(15, 1, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-21 07:02:18'),
-(16, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-21 07:02:49'),
-(17, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-21 15:16:01'),
-(18, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-21 15:29:33'),
-(19, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-21 15:29:36'),
-(20, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-21 15:39:06'),
-(21, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-21 15:53:36'),
-(22, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-21 15:53:53'),
-(23, 1, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-21 15:59:50'),
-(24, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-21 16:01:20'),
-(25, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-21 16:01:40'),
-(26, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-21 16:01:45'),
-(27, 1, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-21 16:11:02'),
-(28, 1, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-21 16:17:35'),
-(29, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-21 16:18:06'),
-(30, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-21 17:13:27'),
-(31, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-21 17:13:28'),
-(32, 6, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-21 17:31:57'),
-(33, 6, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-21 17:32:10'),
-(34, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-22 02:38:49'),
-(35, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-22 02:40:29'),
-(36, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-22 03:22:16'),
-(37, 7, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-22 03:23:49'),
-(38, 7, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-22 03:40:15'),
-(39, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-22 03:41:11'),
-(40, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-22 03:41:18'),
-(41, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-22 03:41:36'),
-(42, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-22 03:41:49'),
-(43, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-22 03:43:16'),
-(44, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-22 04:27:11'),
-(45, 7, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-22 04:27:59'),
-(46, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-22 04:29:01'),
-(47, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-22 04:34:20'),
-(48, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-22 05:02:12'),
-(49, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-22 05:50:47'),
-(50, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-22 06:38:03'),
-(51, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-22 07:06:53'),
-(52, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-22 16:57:29'),
-(53, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-22 17:01:59'),
-(54, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-22 17:02:27'),
-(55, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-22 17:41:18'),
-(56, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-23 15:24:14'),
-(57, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-23 15:27:05'),
-(58, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-23 15:27:17'),
-(59, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-23 15:27:28'),
-(60, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-23 15:56:05'),
-(61, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-23 16:09:44'),
-(62, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-23 16:11:00'),
-(63, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-23 16:19:08'),
-(64, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-23 16:19:10'),
-(65, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-23 16:36:55'),
-(66, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-23 16:36:57'),
-(67, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-23 16:44:26'),
-(68, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-23 16:44:27'),
-(69, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-23 16:50:49'),
-(70, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-23 16:50:50'),
-(71, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-23 16:52:11'),
-(72, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-23 16:52:11'),
-(73, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-23 16:52:52'),
-(74, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-23 16:52:52'),
-(75, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-23 16:52:53'),
-(76, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-23 16:52:54'),
-(77, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-23 16:53:01'),
-(78, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-23 16:53:01'),
-(79, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-23 17:01:27'),
-(80, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-23 17:01:28'),
-(81, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-23 17:01:52'),
-(82, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-23 17:01:52'),
-(83, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-23 17:02:11'),
-(84, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-23 17:02:12'),
-(85, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-23 17:02:27'),
-(86, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-23 17:02:27'),
-(87, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-23 17:15:19'),
-(88, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-23 17:15:20'),
-(89, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-23 17:15:58'),
-(90, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-23 17:15:58'),
-(91, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-23 17:16:09'),
-(92, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-23 17:16:09'),
-(93, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-23 17:17:34'),
-(94, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-23 17:17:34'),
-(95, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-24 14:49:17'),
-(96, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-24 14:49:17'),
-(97, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-24 15:04:02'),
-(98, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-24 15:04:04'),
-(99, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-24 15:40:16'),
-(100, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-24 15:40:29'),
-(101, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-24 15:40:33'),
-(102, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-24 15:44:33'),
-(103, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-24 15:44:37'),
-(104, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-24 15:45:24'),
-(105, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-24 15:45:26'),
-(106, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-24 15:47:09'),
-(107, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-24 15:47:11'),
-(108, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-24 15:47:47'),
-(109, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-24 15:47:49'),
-(110, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-24 16:22:47'),
-(111, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-24 16:23:06'),
-(112, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-24 16:23:11'),
-(113, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-24 16:26:16'),
-(114, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-24 16:26:21'),
-(115, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-24 16:29:02'),
-(116, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-24 16:29:16'),
-(117, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-24 16:29:30'),
-(118, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-24 16:30:50'),
-(119, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-24 16:30:54'),
-(120, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-24 16:34:40'),
-(121, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-24 16:53:07'),
-(122, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-24 17:11:57'),
-(123, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-24 17:13:36'),
-(124, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-24 17:13:38'),
-(125, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-24 17:21:35'),
-(126, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-24 17:21:50'),
-(127, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-24 17:25:13'),
-(128, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-24 17:27:21'),
-(129, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-24 17:27:23'),
-(130, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-24 17:31:29'),
-(131, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-24 17:31:29'),
-(132, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-24 17:31:49'),
-(133, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-24 17:31:50'),
-(134, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-24 18:25:07'),
-(135, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-24 18:25:07'),
-(136, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-24 18:39:12'),
-(137, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-24 18:39:13'),
-(138, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-24 18:40:04'),
-(139, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-24 18:40:04'),
-(140, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-24 18:40:30'),
-(141, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-24 18:40:31'),
-(142, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-24 18:40:42'),
-(143, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-24 18:40:43'),
-(144, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-24 18:40:57'),
-(145, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-24 18:40:57'),
-(146, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-24 18:51:30'),
-(147, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-24 18:51:31'),
-(148, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-24 18:51:37'),
-(149, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-24 18:51:37'),
-(150, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-24 19:09:23'),
-(151, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-24 19:09:24'),
-(152, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-26 04:01:28'),
-(153, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-26 04:01:30'),
-(154, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-26 06:28:00'),
-(155, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-26 06:28:01'),
-(156, 1, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-26 06:28:16'),
-(157, 1, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-26 06:28:17'),
-(158, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-26 06:36:52'),
-(159, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-26 06:36:53'),
-(160, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-26 06:59:06'),
-(161, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-26 06:59:08'),
-(162, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-26 07:12:48'),
-(163, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-26 07:12:49'),
-(164, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-26 07:12:50'),
-(165, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-26 07:12:52'),
-(166, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-26 07:12:53'),
-(167, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-26 07:53:45'),
-(168, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-26 07:53:52');
+(1, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-27 02:22:06'),
+(2, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-27 02:22:07'),
+(3, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-27 02:22:13'),
+(4, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-27 02:22:13'),
+(5, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-27 02:39:52'),
+(6, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-27 02:39:59'),
+(7, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-28 01:02:46'),
+(8, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-28 01:02:48'),
+(9, 10, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-28 02:00:55'),
+(10, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-28 02:01:11'),
+(11, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-28 02:01:12'),
+(12, 10, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-28 02:01:30'),
+(13, 10, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-28 02:02:10'),
+(14, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-28 02:04:49'),
+(15, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-28 02:04:49'),
+(16, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-28 02:05:07'),
+(17, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-28 02:05:08'),
+(18, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-28 02:26:02'),
+(19, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-28 02:26:03'),
+(20, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-28 02:26:43'),
+(21, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-28 02:26:44'),
+(22, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-28 02:29:52'),
+(23, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-28 02:29:53'),
+(24, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-28 03:27:01'),
+(25, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-28 03:27:01'),
+(26, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-28 03:51:25'),
+(27, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-28 03:51:26'),
+(28, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-28 03:53:19'),
+(29, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-28 03:53:22'),
+(30, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-28 04:15:03'),
+(31, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-28 04:15:03'),
+(32, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-28 04:15:17'),
+(33, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-28 04:15:18'),
+(34, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-28 04:15:29'),
+(35, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-28 04:15:31'),
+(36, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '127.0.0.1', '2026-04-28 07:01:26'),
+(37, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '127.0.0.1', '2026-04-28 07:01:27'),
+(38, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-28 07:03:19'),
+(39, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-28 07:03:24'),
+(40, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-28 08:33:07'),
+(41, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-28 08:33:12'),
+(42, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-28 09:55:34'),
+(43, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-28 09:55:38'),
+(44, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-28 10:03:41'),
+(45, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-28 10:03:42'),
+(46, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-28 10:11:20'),
+(47, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-28 10:11:22'),
+(48, 10, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-28 10:17:17'),
+(49, 10, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-28 10:17:30'),
+(50, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-28 10:21:37'),
+(51, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-28 10:21:38'),
+(52, 10, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-28 10:21:43'),
+(53, 10, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-28 10:21:47'),
+(54, 10, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-28 10:22:38'),
+(55, 10, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-28 10:23:05'),
+(56, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-28 10:40:47'),
+(57, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-28 10:40:49'),
+(58, 10, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-28 10:42:47'),
+(59, 10, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-28 10:43:58'),
+(60, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-28 10:44:20'),
+(61, 2, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-28 10:44:20'),
+(62, 10, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-28 10:45:12'),
+(63, 10, 'AKSES DASHBOARD', 'User membuka halaman Dashboard utama', '::1', '2026-04-28 10:45:37');
 
 -- --------------------------------------------------------
 
@@ -352,7 +256,39 @@ INSERT INTO `notifikasi` (`id`, `id_user`, `pesan`, `is_read`, `created_at`) VAL
 (62, 2, 'Permintaan Baru: hehe ingin meminjam HEHEHAH', 1, '2026-04-25 23:56:37'),
 (63, 6, 'Permintaan Baru: hehe ingin meminjam HEHEHAH', 0, '2026-04-25 23:56:37'),
 (64, 2, 'Permintaan Baru: hehe ingin meminjam HEHEHAH', 1, '2026-04-25 23:57:05'),
-(65, 6, 'Permintaan Baru: hehe ingin meminjam HEHEHAH', 0, '2026-04-25 23:57:05');
+(65, 6, 'Permintaan Baru: hehe ingin meminjam HEHEHAH', 0, '2026-04-25 23:57:05'),
+(66, 2, 'Permintaan Baru: hehe ingin meminjam wer', 1, '2026-04-26 03:06:41'),
+(67, 6, 'Permintaan Baru: hehe ingin meminjam wer', 0, '2026-04-26 03:06:41'),
+(68, 2, 'Permintaan Baru: hehe ingin meminjam Microsoft Surface Laptop 7. Edition 13.8', 1, '2026-04-26 19:22:25'),
+(69, 2, 'Permintaan Baru: hehe ingin meminjam Microsoft Surface Laptop 7. Edition 13.8', 1, '2026-04-27 18:55:41'),
+(70, 2, 'Permintaan Baru: ruriha ingin meminjam Microsoft Surface Laptop 7. Edition 13.8', 1, '2026-04-27 19:01:41'),
+(71, 2, 'Permintaan Baru: ruriha ingin meminjam Microsoft Surface Laptop 7. Edition 13.8', 1, '2026-04-27 19:03:56'),
+(72, 2, 'Permintaan Baru: ruriha ingin meminjam Microsoft Surface Laptop 7. Edition 13.8', 1, '2026-04-27 19:15:55'),
+(73, 2, 'Permintaan Baru: hehe ingin meminjam Microsoft Surface Laptop 7. Edition 13.8', 1, '2026-04-27 19:34:17'),
+(74, 2, 'Permintaan Baru: ruriha ingin meminjam Microsoft Surface Laptop 7. Edition 13.8', 1, '2026-04-27 19:43:29'),
+(75, 2, 'Permintaan Baru: ruriha ingin meminjam Microsoft Surface Laptop 7. Edition 13.8', 1, '2026-04-27 20:20:31'),
+(76, 2, 'Permintaan Baru: hehe ingin meminjam Microsoft Surface Laptop 7. Edition 13.8', 1, '2026-04-27 20:26:49'),
+(77, 2, 'Permintaan Baru: hehe ingin meminjam Microsoft Surface Laptop 7. Edition 13.8', 1, '2026-04-27 20:40:40'),
+(78, 2, 'Permintaan Baru: hehe ingin meminjam Microsoft Surface Laptop 7. Edition 13.8', 1, '2026-04-27 20:58:05'),
+(79, 2, 'Peminjaman Microsoft Surface Laptop 7. Edition 13.8 DISETUJUI.', 1, '2026-04-27 20:58:13'),
+(80, 2, 'Permintaan Baru: hehe ingin meminjam Microsoft Surface Laptop 7. Edition 13.8', 1, '2026-04-27 21:01:21'),
+(81, 2, 'Peminjaman Microsoft Surface Laptop 7. Edition 13.8 DISETUJUI.', 1, '2026-04-27 21:01:29'),
+(82, 2, 'Permintaan Baru: hehe ingin meminjam Microsoft Surface Laptop 7. Edition 13.8', 1, '2026-04-27 22:07:35'),
+(83, 2, 'Peminjaman Microsoft Surface Laptop 7. Edition 13.8 DISETUJUI.', 1, '2026-04-27 22:07:47'),
+(84, 2, 'Permintaan Baru: ruriha ingin meminjam Microsoft Surface Laptop 7. Edition 13.8', 1, '2026-04-27 22:08:56'),
+(85, 10, 'Peminjaman Microsoft Surface Laptop 7. Edition 13.8 DISETUJUI.', 1, '2026-04-27 22:09:06'),
+(86, 2, 'Permintaan Baru: ruriha ingin meminjam Microsoft Surface Laptop 7. Edition 13.8', 1, '2026-04-27 22:11:34'),
+(87, 10, 'Peminjaman Microsoft Surface Laptop 7. Edition 13.8 DISETUJUI.', 1, '2026-04-27 22:12:51'),
+(88, 2, 'Permintaan Baru: hehe ingin meminjam Microsoft Surface Laptop 7. Edition 13.8', 1, '2026-04-28 00:01:34'),
+(89, 2, 'Peminjaman Microsoft Surface Laptop 7. Edition 13.8 DISETUJUI.', 1, '2026-04-28 00:01:49'),
+(90, 2, 'Permintaan Baru: hehe ingin meminjam Microsoft Surface Laptop 7. Edition 13.8', 1, '2026-04-28 02:00:23'),
+(91, 2, 'Peminjaman Microsoft Surface Laptop 7. Edition 13.8 DISETUJUI.', 1, '2026-04-28 02:00:32'),
+(92, 2, 'Permintaan Baru: hehe ingin meminjam Microsoft Surface Laptop 7. Edition 13.8', 1, '2026-04-28 02:02:49'),
+(93, 2, 'Peminjaman Microsoft Surface Laptop 7. Edition 13.8 DISETUJUI.', 1, '2026-04-28 02:03:27'),
+(94, 2, 'Permintaan Baru: hehe ingin meminjam Microsoft Surface Laptop 7. Edition 13.8', 1, '2026-04-28 02:04:05'),
+(95, 2, 'Peminjaman Microsoft Surface Laptop 7. Edition 13.8 DISETUJUI.', 1, '2026-04-28 02:04:13'),
+(96, 2, 'Permintaan Baru: ruriha ingin meminjam Microsoft Surface Laptop 7. Edition 13.8', 0, '2026-04-28 03:44:06'),
+(97, 10, 'Peminjaman Microsoft Surface Laptop 7. Edition 13.8 DISETUJUI.', 0, '2026-04-28 03:44:28');
 
 -- --------------------------------------------------------
 
@@ -363,52 +299,75 @@ INSERT INTO `notifikasi` (`id`, `id_user`, `pesan`, `is_read`, `created_at`) VAL
 CREATE TABLE `peminjaman` (
   `id` int(11) UNSIGNED NOT NULL,
   `id_alat` int(11) UNSIGNED DEFAULT NULL,
+  `id_user` int(11) DEFAULT NULL,
   `nama_peminjam` varchar(100) DEFAULT NULL,
   `tgl_pinjam` date DEFAULT NULL,
   `tgl_kembali` date DEFAULT NULL,
   `tanggal_dikembalikan` datetime DEFAULT NULL,
   `jumlah` int(11) NOT NULL,
   `status` enum('pending','dipinjam','selesai') DEFAULT 'pending',
-  `denda` int(11) DEFAULT 0,
-  `status_denda` varchar(20) DEFAULT 'lunas'
+  `kondisi_kembali` enum('Baik','Rusak','Hilang') DEFAULT 'Baik',
+  `catatan_checking` text DEFAULT NULL,
+  `admin_konfirmasi` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `peminjaman`
 --
 
-INSERT INTO `peminjaman` (`id`, `id_alat`, `nama_peminjam`, `tgl_pinjam`, `tgl_kembali`, `tanggal_dikembalikan`, `jumlah`, `status`, `denda`, `status_denda`) VALUES
-(1, 1, 'iruma', '2026-04-15', '2026-04-15', NULL, 0, 'selesai', 0, 'lunas'),
-(2, 1, 'hehe', '2026-04-15', '2026-04-15', NULL, 1, 'selesai', 0, 'lunas'),
-(9, 2, 'iruma', '2026-04-15', '2026-04-16', NULL, 1, 'selesai', 0, 'lunas'),
-(10, 3, 'iruma', '2026-04-15', '2026-04-15', NULL, 1, 'selesai', 0, 'lunas'),
-(11, 3, 'samsudin', '2026-04-16', '2026-04-16', NULL, 2, 'selesai', 0, 'lunas'),
-(12, 1, 'iruma', '2026-04-16', '2026-04-17', NULL, 1, 'selesai', 0, 'lunas'),
-(14, 7, 'Muhamad Faiz', '2026-04-17', '2026-04-17', NULL, 50, 'selesai', 0, 'lunas'),
-(15, 1, 'ruriha', '2026-04-17', '2026-04-17', NULL, 1, 'selesai', 0, 'lunas'),
-(16, 1, 'hehe', '2026-04-17', '2026-04-17', NULL, 1, 'selesai', 0, 'lunas'),
-(17, 1, 'ahay', '2026-04-18', '2026-04-18', NULL, 1, 'selesai', 0, 'lunas'),
-(18, 1, 'ahay', '2026-04-21', '2026-04-21', NULL, 1, 'selesai', 0, 'lunas'),
-(19, 10, 'ahay', '2026-04-21', '2026-04-21', NULL, 1, 'selesai', 0, 'lunas'),
-(20, 2, 'ahay', '2026-04-21', '2026-04-21', NULL, 1, 'selesai', 0, 'lunas'),
-(21, 10, 'hehe', '2026-04-21', '2026-04-21', NULL, 1, 'selesai', 0, 'lunas'),
-(22, 2, 'hehe', '2026-04-21', '2026-04-21', NULL, 1, 'selesai', 0, 'lunas'),
-(23, 1, 'apalah', '2026-04-22', '2026-04-22', NULL, 1, 'selesai', 0, 'lunas'),
-(24, 1, 'hehe', '2026-04-22', '2026-04-22', NULL, 1, 'selesai', 0, 'lunas'),
-(25, 1, 'apalah', '2026-04-22', '2026-04-22', NULL, 1, 'selesai', 0, 'lunas'),
-(26, 1, 'hehe', '2026-04-22', '2026-04-23', NULL, 1, 'selesai', 0, 'lunas'),
-(27, 3, 'hehe', '2026-04-23', '2026-04-23', NULL, 10, 'selesai', 0, 'lunas'),
-(28, 16, 'hehe', '2026-04-23', '2026-04-23', NULL, 1, 'selesai', 0, 'lunas'),
-(30, 16, 'hehe', '2026-04-24', '2026-04-24', NULL, 1, 'selesai', 0, 'lunas'),
-(31, 16, 'hehe', '2026-04-24', '2026-04-24', NULL, 1, 'selesai', 0, 'lunas'),
-(32, 1, 'eheheheheheheheheheheh', '2026-04-24', '2026-04-23', NULL, 1, 'selesai', 0, 'lunas'),
-(33, 1, 'hehe', '2026-04-24', '2026-04-27', NULL, 1, 'selesai', 0, 'lunas'),
-(34, 16, 'hehe', '2026-04-24', '2026-04-23', NULL, 1, 'selesai', 0, 'lunas'),
-(36, 1, 'hehe', '2026-04-24', '2026-04-23', NULL, 1, 'selesai', 0, 'lunas'),
-(37, 1, 'hehe', '2026-04-24', '2026-04-23', NULL, 1, 'selesai', 0, 'lunas'),
-(38, 1, 'hehe', '2026-04-24', '2026-04-22', NULL, 1, 'selesai', 0, 'lunas'),
-(39, 5, 'ahay', '2026-04-26', '2026-04-29', '2026-04-26 06:38:25', 1, 'selesai', 0, 'lunas'),
-(41, 16, 'hehe', '2026-04-26', '2026-04-26', '2026-04-26 06:57:28', 1, 'selesai', 0, 'lunas');
+INSERT INTO `peminjaman` (`id`, `id_alat`, `id_user`, `nama_peminjam`, `tgl_pinjam`, `tgl_kembali`, `tanggal_dikembalikan`, `jumlah`, `status`, `kondisi_kembali`, `catatan_checking`, `admin_konfirmasi`) VALUES
+(1, 1, NULL, 'iruma', '2026-04-15', '2026-04-15', NULL, 0, 'selesai', 'Baik', NULL, NULL),
+(2, 1, NULL, 'hehe', '2026-04-15', '2026-04-15', NULL, 1, 'selesai', 'Baik', NULL, NULL),
+(9, 2, NULL, 'iruma', '2026-04-15', '2026-04-16', NULL, 1, 'selesai', 'Baik', NULL, NULL),
+(10, 3, NULL, 'iruma', '2026-04-15', '2026-04-15', NULL, 1, 'selesai', 'Baik', NULL, NULL),
+(11, 3, NULL, 'samsudin', '2026-04-16', '2026-04-16', NULL, 2, 'selesai', 'Baik', NULL, NULL),
+(12, 1, NULL, 'iruma', '2026-04-16', '2026-04-17', NULL, 1, 'selesai', 'Baik', NULL, NULL),
+(14, 7, NULL, 'Muhamad Faiz', '2026-04-17', '2026-04-17', NULL, 50, 'selesai', 'Baik', NULL, NULL),
+(15, 1, NULL, 'ruriha', '2026-04-17', '2026-04-17', NULL, 1, 'selesai', 'Baik', NULL, NULL),
+(16, 1, NULL, 'hehe', '2026-04-17', '2026-04-17', NULL, 1, 'selesai', 'Baik', NULL, NULL),
+(17, 1, NULL, 'ahay', '2026-04-18', '2026-04-18', NULL, 1, 'selesai', 'Baik', NULL, NULL),
+(18, 1, NULL, 'ahay', '2026-04-21', '2026-04-21', NULL, 1, 'selesai', 'Baik', NULL, NULL),
+(19, 10, NULL, 'ahay', '2026-04-21', '2026-04-21', NULL, 1, 'selesai', 'Baik', NULL, NULL),
+(20, 2, NULL, 'ahay', '2026-04-21', '2026-04-21', NULL, 1, 'selesai', 'Baik', NULL, NULL),
+(21, 10, NULL, 'hehe', '2026-04-21', '2026-04-21', NULL, 1, 'selesai', 'Baik', NULL, NULL),
+(22, 2, NULL, 'hehe', '2026-04-21', '2026-04-21', NULL, 1, 'selesai', 'Baik', NULL, NULL),
+(23, 1, NULL, 'apalah', '2026-04-22', '2026-04-22', NULL, 1, 'selesai', 'Baik', NULL, NULL),
+(24, 1, NULL, 'hehe', '2026-04-22', '2026-04-22', NULL, 1, 'selesai', 'Baik', NULL, NULL),
+(25, 1, NULL, 'apalah', '2026-04-22', '2026-04-22', NULL, 1, 'selesai', 'Baik', NULL, NULL),
+(26, 1, NULL, 'hehe', '2026-04-22', '2026-04-23', NULL, 1, 'selesai', 'Baik', NULL, NULL),
+(27, 3, NULL, 'hehe', '2026-04-23', '2026-04-23', NULL, 10, 'selesai', 'Baik', NULL, NULL),
+(28, 16, NULL, 'hehe', '2026-04-23', '2026-04-23', NULL, 1, 'selesai', 'Baik', NULL, NULL),
+(30, 16, NULL, 'hehe', '2026-04-24', '2026-04-24', NULL, 1, 'selesai', 'Baik', NULL, NULL),
+(31, 16, NULL, 'hehe', '2026-04-24', '2026-04-24', NULL, 1, 'selesai', 'Baik', NULL, NULL),
+(32, 1, NULL, 'eheheheheheheheheheheh', '2026-04-24', '2026-04-23', NULL, 1, 'selesai', 'Baik', NULL, NULL),
+(33, 1, NULL, 'hehe', '2026-04-24', '2026-04-27', NULL, 1, 'selesai', 'Baik', NULL, NULL),
+(34, 16, NULL, 'hehe', '2026-04-24', '2026-04-23', NULL, 1, 'selesai', 'Baik', NULL, NULL),
+(36, 1, NULL, 'hehe', '2026-04-24', '2026-04-23', NULL, 1, 'selesai', 'Baik', NULL, NULL),
+(37, 1, NULL, 'hehe', '2026-04-24', '2026-04-23', NULL, 1, 'selesai', 'Baik', NULL, NULL),
+(38, 1, NULL, 'hehe', '2026-04-24', '2026-04-22', NULL, 1, 'selesai', 'Baik', NULL, NULL),
+(39, 5, NULL, 'ahay', '2026-04-26', '2026-04-29', '2026-04-26 06:38:25', 1, 'selesai', 'Baik', NULL, NULL),
+(41, 16, NULL, 'hehe', '2026-04-26', '2026-04-26', '2026-04-26 06:57:28', 1, 'selesai', 'Baik', NULL, NULL),
+(42, 4, NULL, 'hehe', '2026-04-26', '2026-04-29', '2026-04-26 10:06:54', 1, 'selesai', 'Baik', NULL, NULL),
+(43, 17, NULL, 'hehe', '2026-04-27', '2026-04-30', '2026-04-27 02:22:55', 1, 'selesai', 'Baik', NULL, NULL),
+(44, 17, NULL, 'hehe', '2026-04-28', '2026-05-01', '2026-04-28 01:55:58', 1, 'selesai', 'Baik', NULL, NULL),
+(45, 17, NULL, 'ruriha', '2026-04-28', '2026-05-01', '2026-04-28 02:02:18', 1, 'selesai', 'Baik', NULL, NULL),
+(46, 17, NULL, 'ruriha', '2026-04-28', '2026-05-01', '2026-04-28 02:07:07', 1, 'selesai', 'Baik', NULL, NULL),
+(47, 17, NULL, 'ruriha', '2026-04-28', '2026-05-01', '2026-04-28 02:17:01', 1, 'selesai', 'Baik', NULL, NULL),
+(48, 18, NULL, 'hehe', '2026-04-28', '2026-05-01', '2026-04-28 02:43:08', 1, 'selesai', 'Baik', NULL, NULL),
+(49, 18, NULL, 'ruriha', '2026-04-28', '2026-04-27', '2026-04-28 02:44:00', 1, 'selesai', 'Baik', NULL, NULL),
+(50, 18, NULL, 'ruriha', '2026-04-28', '2026-05-01', '2026-04-28 03:21:51', 1, 'selesai', 'Baik', NULL, NULL),
+(51, 18, NULL, 'hehe', '2026-04-28', '2026-05-22', '2026-04-28 03:47:29', 1, 'selesai', 'Baik', NULL, NULL),
+(52, 18, NULL, 'hehe', '2026-04-28', '2026-04-23', '2026-04-28 03:47:59', 1, 'selesai', 'Baik', NULL, NULL),
+(53, 18, 2, 'hehe', '2026-04-28', '2026-04-24', '2026-04-28 03:58:33', 1, 'selesai', 'Baik', NULL, NULL),
+(54, 18, 2, 'hehe', '2026-04-28', '2026-04-24', '2026-04-28 04:01:52', 1, 'selesai', 'Baik', NULL, NULL),
+(55, 18, 2, 'hehe', '2026-04-28', '2026-04-23', '2026-04-28 05:07:58', 1, 'selesai', 'Baik', NULL, NULL),
+(56, 18, 10, 'ruriha', '2026-04-28', '2026-05-01', '2026-04-28 05:09:19', 1, 'selesai', 'Baik', NULL, NULL),
+(57, 18, 10, 'ruriha', '2026-04-28', '2026-04-23', '2026-04-28 05:13:08', 1, 'selesai', 'Baik', NULL, NULL),
+(58, 18, 2, 'hehe', '2026-04-28', '2026-05-01', '2026-04-28 07:03:59', 1, 'selesai', 'Baik', NULL, NULL),
+(59, 18, 2, 'hehe', '2026-04-28', '2026-04-24', '2026-04-28 09:00:44', 1, 'selesai', 'Baik', NULL, NULL),
+(60, 18, 2, 'hehe', '2026-04-28', '2026-04-28', '2026-04-28 09:03:40', 1, 'selesai', 'Baik', NULL, NULL),
+(61, 18, 2, 'hehe', '2026-04-28', '2026-05-01', '2026-04-28 09:04:29', 1, 'selesai', 'Hilang', 'UIEWRF U83CGRFVUIE', NULL),
+(62, 18, 10, 'ruriha', '2026-04-28', '2026-05-01', NULL, 1, 'dipinjam', 'Baik', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -435,13 +394,9 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`nama`, `email`, `username`, `password`, `role`, `foto`, `status`, `created_at`, `id`, `verification_code`, `is_verified`) VALUES
-('ahay', 'inumakiiruma@gmail.com', 'iruma', '$2y$10$cUqzGvnbbjy5SyVzhgbbP.yX7mmRZxmPUV0kmZ.rmGkNbyChhPFMq', 'anggota', '1776754890_98b119f7683e6f16b00a.jpg', 'aktif', '2026-04-11 15:40:46', 1, NULL, 0),
-('hehe', 'nasrulrizki11@gmail.com', 'hehe', '$2y$10$333tHXSXRJeH7w2JhGD2euQj7oPUFZv7u0sbl7cPHuKdsCT7tH9fm', 'admin', '1776307918_f9b3e24b5ab95b1d5dac.jpg', 'aktif', '2026-04-11 05:05:43', 2, NULL, 0),
-('ruriha', 'hehe@gmail.com', 'ruriha', '$2y$10$Nzz2K/gJ0bfoT6KgzZ11RuMVphSoVYJdDtq8M5Y6q4A0jOW8Rn/pC', 'anggota', '1776307598_1cb5d3a9f591bf5a4418.jpg', 'aktif', '2026-04-16 02:45:57', 3, NULL, 0),
-('asep', 'inumakiiruma@gmail.com', 'asep', '$2y$10$2uGRl1zKOMCD7hPvvv5dHOq.iMmlR0KRlXR2EXaz2UL3fRBr.2hGC', 'petugas', '1776440001_2b1a4e81fbefb5c49cba.jpg', 'aktif', '2026-04-17 15:33:21', 4, NULL, 0),
-('Muhamad Faiz', 'muhamadfaiz2@gmail.com', 'paes', '$2y$10$.CjiJiPgnCJGCgyXNevE/.xl1H9L8FY3aukRFp2.v09HUjnuNiEDi', 'anggota', '1776441035_6940d3c447b54bd9ae1b.jpg', 'aktif', '2026-04-17 15:50:08', 5, NULL, 0),
-('uhuyyy', 'inumakiiruma@gmail.com', 'uhuyyy', '$2y$10$ADkmHnMYJGLg6V4h8gjVgefXUhZloPqqgvVVX2cEEDXoG5fPZSkdq', 'admin', 'default.png', 'aktif', '2026-04-21 17:30:24', 6, NULL, 0),
-('apalah', 'inumakiiruma@gmail.com', 'apalah', '$2y$10$eF2/Gx4x4HWf.OvjO3IHIerwv7RtOZrThvOtR7bJ70fsDlqIr0wr.', 'anggota', 'default.png', 'aktif', '2026-04-22 03:23:21', 7, NULL, 0);
+('hehe', 'nasrulrizki11@gmail.com', 'hehe', '$2y$10$awqxp0B60F3nKd3CtYr3vO1YTJPHz58dSnBSq4g7/H1YzYZVGZZJm', 'admin', '1777256498_1048be41cdb1ec46357f.jpg', 'aktif', '2026-04-11 05:05:43', 2, NULL, 0),
+('iruma', 'inumakiiruma@gmail.com', 'hehehe', '$2y$10$uFen1WgnDs29v0Yn7t.SZeAwqB562TJHJw7Dq8yqqvT5egBuPXS..', 'petugas', 'default.png', 'aktif', '2026-04-26 10:11:50', 9, NULL, 0),
+('ruriha', 'inumakiiruma@gmail.com', 'ruriha', '$2y$10$4VlxNcH8RB0.XRQc2sPIdO4zfTqtzj5qJfyV7v8hJiHtKOolhTXfu', 'anggota', 'default.png', 'aktif', '2026-04-28 02:00:49', 10, NULL, 0);
 
 --
 -- Indexes for dumped tables
@@ -451,6 +406,12 @@ INSERT INTO `users` (`nama`, `email`, `username`, `password`, `role`, `foto`, `s
 -- Indexes for table `alat`
 --
 ALTER TABLE `alat`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `denda`
+--
+ALTER TABLE `denda`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -491,7 +452,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `alat`
 --
 ALTER TABLE `alat`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+
+--
+-- AUTO_INCREMENT for table `denda`
+--
+ALTER TABLE `denda`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `kategori`
@@ -503,25 +470,25 @@ ALTER TABLE `kategori`
 -- AUTO_INCREMENT for table `logs`
 --
 ALTER TABLE `logs`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=169;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
 
 --
 -- AUTO_INCREMENT for table `notifikasi`
 --
 ALTER TABLE `notifikasi`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=98;
 
 --
 -- AUTO_INCREMENT for table `peminjaman`
 --
 ALTER TABLE `peminjaman`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

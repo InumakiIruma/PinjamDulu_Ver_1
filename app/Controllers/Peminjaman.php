@@ -194,9 +194,9 @@ class Peminjaman extends BaseController
         // 1. Hitung Denda Fisik
         $denda_fisik = 0;
         if ($kondisi == 'Rusak') {
-            $denda_fisik = 50000;
+            $denda_fisik = 500000;
         } elseif ($kondisi == 'Hilang') {
-            $denda_fisik = 100000;
+            $denda_fisik = 10000000;
         }
 
         // 2. Perbaikan Hitung Denda Keterlambatan (Menggunakan format Y-m-d murni)

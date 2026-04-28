@@ -21,11 +21,11 @@
             <table class="table table-hover align-middle mb-0">
                 <thead class="bg-light">
                     <tr>
-                        <th class="ps-4">Peminjam</th>
-                        <th>Alat</th>
-                        <th class="text-center">Jumlah</th>
-                        <th class="text-center">Status Saat Ini</th>
-                        <th class="text-center">Aksi</th>
+                        <th class="ps-4" style="width: 25%;">Peminjam</th>
+                        <th style="width: 20%;">Alat</th>
+                        <th class="text-center" style="width: 10%;">Jumlah</th>
+                        <th class="text-center" style="width: 15%;">Status</th>
+                        <th class="text-center" style="width: 30%;">Aksi Operasional</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -37,56 +37,73 @@
                         <?php foreach ($peminjaman as $row) : ?>
                             <tr>
                                 <td class="ps-4">
-                                    <div class="fw-bold"><?= $row['nama_peminjam'] ?></div>
-                                    <small class="text-muted"><?= $row['tgl_pinjam'] ?></small>
+                                    <div class="fw-bold text-dark"><?= $row['nama_peminjam'] ?></div>
+                                    <small class="text-muted"><i class="bi bi-calendar3 me-1"></i> <?= date('d M Y', strtotime($row['tgl_pinjam'])) ?></small>
                                 </td>
-                                <td><span class="badge bg-light text-dark border"><?= $row['nama_alat'] ?></span></td>
-                                <td class="text-center"><?= $row['jumlah'] ?></td>
+                                <td>
+                                    <span class="badge bg-light text-dark border fw-medium">
+                                        <i class="bi bi-tools me-1 text-primary"></i> <?= $row['nama_alat'] ?>
+                                    </span>
+                                </td>
+                                <td class="text-center fw-bold"><?= $row['jumlah'] ?></td>
                                 <td class="text-center">
                                     <?php if ($row['status'] == 'pending') : ?>
-                                        <a href="<?= base_url('peminjaman/konfirmasi/' . $row['id']) ?>" class="btn btn-primary btn-sm rounded-pill px-3 me-1 btn-konfirmasi">
-                                            <i class="bi bi-check-lg"></i> Setujui
-                                        </a>
-                                        <a href="<?= base_url('peminjaman/tolak/' . $row['id']) ?>" class="btn btn-outline-danger btn-sm rounded-pill px-3 btn-tolak">
-                                            <i class="bi bi-x-lg"></i> Tolak
-                                        </a>
-
+                                        <span class="badge bg-warning bg-opacity-10 text-warning border-warning border-opacity-25 px-3">Menunggu</span>
                                     <?php elseif ($row['status'] == 'dipinjam') : ?>
-                                        <button type="button" class="btn btn-success btn-sm rounded-pill px-3" data-bs-toggle="modal" data-bs-target="#checkBarang<?= $row['id'] ?>">
-                                            <i class="bi bi-box-arrow-in-left"></i> Check & Kembali
-                                        </button>
+                                        <span class="badge bg-info bg-opacity-10 text-info border-info border-opacity-25 px-3">Dipinjam</span>
+                                    <?php endif; ?>
+                                </td>
+                                <td class="text-center">
+                                    <div class="d-flex justify-content-center gap-2">
+                                        <?php if ($row['status'] == 'pending') : ?>
+                                            <a href="<?= base_url('peminjaman/konfirmasi/' . $row['id']) ?>" class="btn btn-primary btn-sm rounded-pill px-3 btn-konfirmasi">
+                                                <i class="bi bi-check-lg"></i> Setujui
+                                            </a>
+                                            <a href="<?= base_url('peminjaman/tolak/' . $row['id']) ?>" class="btn btn-outline-danger btn-sm rounded-pill px-3 btn-tolak">
+                                                <i class="bi bi-x-lg"></i> Tolak
+                                            </a>
 
-                                        <div class="modal fade" id="checkBarang<?= $row['id'] ?>" tabindex="-1">
-                                            <div class="modal-dialog modal-dialog-centered">
-                                                <div class="modal-content border-0 shadow">
-                                                    <div class="modal-header bg-success text-white">
-                                                        <h5 class="modal-title">Konfirmasi Pengembalian</h5>
-                                                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                                        <?php elseif ($row['status'] == 'dipinjam') : ?>
+                                            <button type="button" class="btn btn-success btn-sm rounded-pill px-4 shadow-sm" data-bs-toggle="modal" data-bs-target="#checkBarang<?= $row['id'] ?>">
+                                                <i class="bi bi-box-arrow-in-left me-1"></i> Check & Kembali
+                                            </button>
+
+                                            <div class="modal fade" id="checkBarang<?= $row['id'] ?>" tabindex="-1" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered">
+                                                    <div class="modal-content border-0 shadow">
+                                                        <div class="modal-header bg-success text-white">
+                                                            <h5 class="modal-title"><i class="bi bi-shield-check me-2"></i>Konfirmasi Pengembalian</h5>
+                                                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                                                        </div>
+                                                        <form action="<?= base_url('peminjaman/konfirmasi_kembali/' . $row['id']) ?>" method="POST">
+                                                            <?= csrf_field(); ?>
+                                                            <div class="modal-body text-start">
+                                                                <div class="alert alert-info py-2 small">
+                                                                    Menerima kembali <b><?= $row['jumlah'] ?> <?= $row['nama_alat'] ?></b> dari <b><?= $row['nama_peminjam'] ?></b>.
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                    <label class="form-label fw-bold small text-uppercase">Kondisi Alat Saat Ini</label>
+                                                                    <select name="kondisi_kembali" class="form-select border-2" required>
+                                                                        <option value="Baik">✅ Baik (Stok akan bertambah)</option>
+                                                                        <option value="Rusak">⚠️ Rusak (Masuk Perbaikan)</option>
+                                                                        <option value="Hilang">❌ Hilang (Stok tetap)</option>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="mb-0">
+                                                                    <label class="form-label fw-bold small text-uppercase">Catatan Checking</label>
+                                                                    <textarea name="catatan" class="form-control" rows="3" placeholder="Contoh: Barang lengkap, kondisi bersih..."></textarea>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer bg-light border-0">
+                                                                <button type="button" class="btn btn-secondary rounded-pill px-4" data-bs-dismiss="modal">Batal</button>
+                                                                <button type="submit" class="btn btn-success rounded-pill px-4">Simpan & Selesai</button>
+                                                            </div>
+                                                        </form>
                                                     </div>
-                                                    <form action="<?= base_url('peminjaman/konfirmasi_kembali/' . $row['id']) ?>" method="POST">
-                                                        <?= csrf_field(); ?>
-                                                        <div class="modal-body text-start">
-                                                            <div class="mb-3">
-                                                                <label class="form-label fw-bold">Kondisi Alat Saat Ini</label>
-                                                                <select name="kondisi_kembali" class="form-select" required>
-                                                                    <option value="Baik">✅ Baik (Stok akan bertambah)</option>
-                                                                    <option value="Rusak">⚠️ Rusak (Masuk Perbaikan)</option>
-                                                                    <option value="Hilang">❌ Hilang (Stok tetap)</option>
-                                                                </select>
-                                                            </div>
-                                                            <div class="mb-0">
-                                                                <label class="form-label fw-bold">Catatan Checking</label>
-                                                                <textarea name="catatan" class="form-control" rows="3" placeholder="Contoh: Barang lengkap atau ada baret..."></textarea>
-                                                            </div>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="submit" class="btn btn-success w-100 rounded-pill">Konfirmasi Pengembalian Selesai</button>
-                                                        </div>
-                                                    </form>
                                                 </div>
                                             </div>
-                                        </div>
-                                    <?php endif; ?>
+                                        <?php endif; ?>
+                                    </div>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
