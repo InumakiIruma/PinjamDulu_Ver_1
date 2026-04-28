@@ -1,100 +1,65 @@
-<?php
+<!DOCTYPE html>
+<html lang="id">
 
-namespace App\Controllers;
+<head>
+    <meta charset="UTF-8">
+    <title>Restore Database</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-use CodeIgniter\Controller;
+    <!-- Optional: Bootstrap biar rapi -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
 
-class Restore extends Controller
-{
-    private $restorePassword = 'admin123'; // GANTI PASSWORD INI!
+<body>
 
-    public function index()
-    {
-        return view('restore/restore_login');
-    }
+    <div class="container mt-5">
+        <div class="card shadow">
+            <div class="card-header bg-danger text-white">
+                <h4>⚠️ Restore Database</h4>
+            </div>
+            <div class="card-body">
 
-    public function auth()
-    {
-        $password = $this->request->getPost('password');
+                <!-- Pesan error -->
+                <?php if (session()->getFlashdata('error')) : ?>
+                    <div class="alert alert-danger">
+                        <?= session()->getFlashdata('error') ?>
+                    </div>
+                <?php endif; ?>
 
-        if ($password === $this->restorePassword) {
-            session()->set('restore_access', true);
-            return redirect()->to('/restore/form');
-        }
+                <!-- Pesan sukses -->
+                <?php if (session()->getFlashdata('success')) : ?>
+                    <div class="alert alert-success">
+                        <?= session()->getFlashdata('success') ?>
+                    </div>
+                <?php endif; ?>
 
-        return redirect()->back()->with('error', 'Password salah!');
-    }
+                <div class="alert alert-warning">
+                    <strong>Peringatan!</strong><br>
+                    Proses restore akan <b>menimpa seluruh data database</b>.<br>
+                    Pastikan Anda sudah melakukan backup terlebih dahulu.
+                </div>
 
-    public function form()
-    {
-        if (!session()->get('restore_access')) {
-            return redirect()->to('/restore');
-        }
+                <form action="<?= base_url('restore/process') ?>" method="post" enctype="multipart/form-data"
+                    onsubmit="return confirm('Yakin ingin restore database? Semua data akan ditimpa!')">
 
-        return view('restore/restore');
-    }
+                    <div class="mb-3">
+                        <label class="form-label">Upload File SQL</label>
+                        <input type="file" name="file_sql" class="form-control" accept=".sql" required>
+                    </div>
 
-    public function process()
-    {
-        if (!session()->get('restore_access')) {
-            return redirect()->to('/restore');
-        }
+                    <button type="submit" class="btn btn-danger">
+                        🔄 Restore Database
+                    </button>
 
-        $file = $this->request->getFile('file_sql');
+                    <a href="<?= base_url('/') ?>" class="btn btn-secondary">
+                        ← Kembali
+                    </a>
+                </form>
 
-        if (!$file || !$file->isValid()) {
-            return redirect()->back()->with('error', 'File tidak valid');
-        }
+            </div>
+        </div>
+    </div>
 
-        $ext = strtolower($file->getClientExtension());
+</body>
 
-        if ($ext !== 'sql') {
-            return redirect()->back()->with('error', 'File harus berformat .sql');
-        }
-
-        // TAMBAHAN : Otomatis membuat database jika belum ada
-        $dbName = 'ci_nasrulrizkimispalah'; // Sesuaikan dengan nama database
-
-        $conn = new \mysqli('localhost', 'root', '', '');
-
-        if ($conn->connect_error) {
-            die('Koneksi gagal');
-        }
-
-        // Buat database jika belum ada
-        $conn->query("CREATE DATABASE IF NOT EXISTS $dbName");
-
-        // Pilih database
-        $conn->select_db($dbName);
-
-        // Sampai sini ----------------------------------------
-
-        $db = \Config\Database::connect();
-
-        try {
-            $sqlLines = file($file->getTempName());
-            $query = '';
-
-            foreach ($sqlLines as $line) {
-                $line = trim($line);
-
-                if ($line == '' || substr($line, 0, 2) == '--') {
-                    continue;
-                }
-
-                $query .= $line;
-
-                if (substr($line, -1) == ';') {
-                    $db->query($query);
-                    $query = '';
-                }
-            }
-
-            session()->remove('restore_access');
-
-            return redirect()->to('/')->with('success', 'Restore berhasil!');
-        } catch (\Exception $e) {
-            return redirect()->back()->with('error', $e->getMessage());
-        }
-    }
-}
+</html>

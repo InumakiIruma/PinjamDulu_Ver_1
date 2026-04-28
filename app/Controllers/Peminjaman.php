@@ -199,33 +199,42 @@ class Peminjaman extends BaseController
             $denda_fisik = 100000;
         }
 
-        // 2. Hitung Denda Keterlambatan
+        // 2. Perbaikan Hitung Denda Keterlambatan (Menggunakan format Y-m-d murni)
         $denda_telat = 0;
-        $tgl_kembali_seharusnya = strtotime($peminjaman['tgl_kembali']);
-        $tgl_sekarang = strtotime(date('Y-m-d'));
 
-        if ($tgl_sekarang > $tgl_kembali_seharusnya) {
-            $selisih_detik = $tgl_sekarang - $tgl_kembali_seharusnya;
-            $selisih_hari = floor($selisih_detik / (60 * 60 * 24));
+        // Pastikan kita hanya membandingkan tanggal (Tanpa Jam) agar akurat
+        $tgl_seharusnya = new \DateTime(date('Y-m-d', strtotime($peminjaman['tgl_kembali'])));
+        $tgl_kembali_asli = new \DateTime(date('Y-m-d')); // Tanggal hari ini
+
+        if ($tgl_kembali_asli > $tgl_seharusnya) {
+            $diff = $tgl_kembali_asli->diff($tgl_seharusnya);
+            $selisih_hari = $diff->days;
+
             if ($selisih_hari > 0) {
-                $denda_telat = $selisih_hari * 5000;
+                $denda_telat = $selisih_hari * 5000; // Rp 5.000 per hari
             }
         }
 
         $total_denda = $denda_fisik + $denda_telat;
 
-        // 3. Update Tabel Peminjaman (Hanya kolom yang ada di DB peminjaman)
+        // 3. Update Tabel Peminjaman
         $this->peminjamanModel->update($id, [
             'status'               => 'selesai',
-            'tanggal_dikembalikan' => date('Y-m-d H:i:s')
+            'tanggal_dikembalikan' => date('Y-m-d H:i:s'),
+            'kondisi_kembali'      => $kondisi,
+            'catatan_checking'     => $catatan_input
         ]);
 
-        // 4. INSERT KE TABEL DENDA (Sesuai denda.sql Anda)
+        // 4. INSERT KE TABEL DENDA
         if ($total_denda > 0) {
+            // Susun keterangan agar jelas di tabel denda
+            $ket_telat = ($denda_telat > 0) ? "Terlambat $selisih_hari hari (Rp " . number_format($denda_telat) . "). " : "";
+            $ket_fisik = ($denda_fisik > 0) ? "Kondisi $kondisi (Rp " . number_format($denda_fisik) . "). " : "";
+
             $this->db->table('denda')->insert([
                 'id_peminjaman'     => $id,
                 'jumlah_denda'      => $total_denda,
-                'keterangan'        => "Denda: " . ($denda_telat > 0 ? "Telat Rp" . number_format($denda_telat) : "") . " ($kondisi). Catatan: $catatan_input",
+                'keterangan'        => $ket_telat . $ket_fisik . "Catatan: $catatan_input",
                 'status_pembayaran' => 'Belum Bayar',
                 'tanggal_dibuat'    => date('Y-m-d H:i:s')
             ]);
@@ -241,9 +250,8 @@ class Peminjaman extends BaseController
             }
         }
 
-        return redirect()->to('/peminjaman/permintaan')->with('success', 'Berhasil! Denda tercatat: Rp ' . number_format($total_denda));
+        return redirect()->to('/peminjaman/permintaan')->with('success', 'Pengembalian berhasil. Total denda: Rp ' . number_format($total_denda));
     }
-
     public function history()
     {
         $data = [
