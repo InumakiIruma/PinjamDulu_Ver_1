@@ -9,19 +9,22 @@ class PeminjamanModel extends Model
     protected $table      = 'peminjaman';
     protected $primaryKey = 'id';
 
-    // FIX: Menambahkan 'jumlah' ke dalam daftar agar bisa dibaca di View
-    // File: app/Models/PeminjamanModel.php
+    // FIX: Menyesuaikan dengan struktur database peminjaman.sql Anda
     protected $allowedFields = [
         'id_alat',
+        'id_user', // Pastikan kolom ini sudah Anda tambahkan di DB (Cara 1 sebelumnya)
         'nama_peminjam',
-        'jumlah',
         'tgl_pinjam',
         'tgl_kembali',
-        'status',
         'tanggal_dikembalikan',
-        'denda',
-        'status_denda' // <--- PASTIKAN INI ADA
+        'jumlah',
+        'status',
+        'kondisi_kembali', // Kolom ini ada di peminjaman.sql Anda
+        'catatan_checking', // Kolom ini ada di peminjaman.sql Anda
+        'admin_konfirmasi'  // Kolom ini ada di peminjaman.sql Anda
+        // Kolom 'denda' dan 'status_denda' TIDAK dimasukkan karena sudah pindah ke tabel denda
     ];
+
     public function getPeminjamanLimit($limit)
     {
         return $this->db->table('peminjaman')
@@ -43,7 +46,10 @@ class PeminjamanModel extends Model
 
         $alat = $alatModel->find($dataPinjam['id_alat']);
 
-        if (!$alat || $alat['stok'] < ($dataPinjam['jumlah'] ?? 0)) {
+        // Menambahkan pengecekan jumlah agar tidak error jika null
+        $jumlahPinjam = $dataPinjam['jumlah'] ?? 0;
+
+        if (!$alat || $alat['stok'] < $jumlahPinjam) {
             return false;
         }
 
@@ -52,11 +58,12 @@ class PeminjamanModel extends Model
             'tgl_pinjam' => date('Y-m-d H:i:s')
         ]);
 
-        $stokBaru = $alat['stok'] - $dataPinjam['jumlah'];
+        $stokBaru = $alat['stok'] - $jumlahPinjam;
         $alatModel->update($dataPinjam['id_alat'], ['stok' => $stokBaru]);
 
         return true;
     }
+
     public function getLaporan()
     {
         return $this->select('peminjaman.*, alat.nama_alat, alat.kategori')

@@ -88,7 +88,7 @@
         </li>
         <li class="nav-item">
             <a class="nav-link <?= (uri_string() == 'peminjaman/history') ? 'active' : '' ?>" href="<?= base_url('/peminjaman/history') ?>">
-                <i class="bi bi-clock-history me-3"></i> <span class="nav-text">Riwayat Saya</span>
+                <i class="bi bi-clock-history me-3"></i> <span class="nav-text">Riwayat Peminjaman</span>
             </a>
         </li>
 
@@ -106,6 +106,16 @@
                 </a>
             </li>
         <?php endif; ?>
+        <ul class="nav">
+            <?php if (session()->get('role') == 'admin') : ?>
+                <li class="nav-item">
+                    <a class="nav-link <?= (uri_string() == 'denda') ? 'active' : '' ?>" href="<?= base_url('denda') ?>">
+                        <i class="bi bi-cash-stack me-2"></i>
+                        <span>Data Denda</span>
+                    </a>
+                </li>
+            <?php endif; ?>
+        </ul>
 
         <?php if ($role == 'admin') : ?>
             <div class="nav-divider">Data Master</div>

@@ -7,11 +7,6 @@
             <h3 class="fw-bold text-dark mb-1">Manajemen Inventaris</h3>
             <p class="text-muted mb-0">Total terdapat <?= count($alat); ?> aset alat terdaftar.</p>
         </div>
-        <div class="col-md-6 text-md-end mt-3 mt-md-0">
-            <button type="button" class="btn btn-primary rounded-pill px-4 shadow-sm fw-bold" data-bs-toggle="modal" data-bs-target="#modalTambahAlat">
-                <i class="bi bi-plus-lg me-2"></i>Tambah Alat Baru
-            </button>
-        </div>
     </div>
 
     <?php if (session()->getFlashdata('success')) : ?>
