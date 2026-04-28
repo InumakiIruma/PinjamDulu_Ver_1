@@ -294,4 +294,25 @@ class Peminjaman extends BaseController
         }
         return redirect()->back()->with('error', 'Gagal memproses.');
     }
+    public function my_history()
+    {
+        $id_user = session()->get('id') ?? session()->get('id_user');
+
+        if (!$id_user) {
+            return redirect()->to('/login')->with('error', 'Silakan login terlebih dahulu.');
+        }
+
+        // Mengambil data peminjaman milik user tersebut, join dengan denda jika ada
+        $data = [
+            'title'      => 'Riwayat Peminjaman Saya',
+            'peminjaman' => $this->peminjamanModel->select('peminjaman.*, alat.nama_alat, denda.jumlah_denda, denda.status_pembayaran')
+                ->join('alat', 'alat.id = peminjaman.id_alat')
+                ->join('denda', 'denda.id_peminjaman = peminjaman.id', 'left') // Left join karena tidak semua punya denda
+                ->where('peminjaman.id_user', $id_user)
+                ->orderBy('peminjaman.id', 'DESC')
+                ->findAll()
+        ];
+
+        return view('peminjaman/my_history', $data);
+    }
 }

@@ -71,4 +71,12 @@ class PeminjamanModel extends Model
             ->orderBy('peminjaman.tgl_pinjam', 'DESC')
             ->findAll();
     }
+    public function getHistoryByUser($id_user)
+    {
+        return $this->select('peminjaman.*, alat.nama_alat, alat.kategori')
+            ->join('alat', 'alat.id = peminjaman.id_alat')
+            ->where('peminjaman.id_user', $id_user) // Filter berdasarkan user yang login
+            ->orderBy('peminjaman.id', 'DESC')
+            ->findAll();
+    }
 }

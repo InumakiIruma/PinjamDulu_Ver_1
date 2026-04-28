@@ -86,11 +86,22 @@
                 <i class="bi bi-cart-plus-fill me-3"></i> <span class="nav-text">Pilih Alat</span>
             </a>
         </li>
-        <li class="nav-item">
-            <a class="nav-link <?= (uri_string() == 'peminjaman/history') ? 'active' : '' ?>" href="<?= base_url('/peminjaman/history') ?>">
-                <i class="bi bi-clock-history me-3"></i> <span class="nav-text">Riwayat Peminjaman</span>
-            </a>
-        </li>
+        <?php if (session()->get('role') == 'admin' || session()->get('role') == 'petugas') : ?>
+            <li class="nav-item">
+                <a class="nav-link <?= (uri_string() == 'peminjaman/history') ? 'active' : '' ?>" href="<?= base_url('/peminjaman/history') ?>">
+                    <i class="bi bi-clock-history me-3"></i>
+                    <span class="nav-text">Riwayat Peminjaman</span>
+                </a>
+            </li>
+        <?php endif; ?>
+        <?php if (session()->get('role') == 'user') : ?>
+            <li class="nav-item">
+                <a class="nav-link <?= url_is('peminjaman/my_history') ? 'active' : '' ?>" href="<?= base_url('peminjaman/my_history') ?>">
+                    <i class="bi bi-person-lines-fill me-2"></i>
+                    <span>Riwayat Pinjam Saya</span>
+                </a>
+            </li>
+        <?php endif; ?>
 
         <li class="nav-item">
             <a class="nav-link <?= (uri_string() == 'peminjaman/pengembalian') ? 'active' : '' ?>" href="<?= base_url('peminjaman/pengembalian') ?>">

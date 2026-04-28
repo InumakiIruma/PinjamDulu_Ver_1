@@ -139,3 +139,6 @@ $routes->get('denda/lunas/(:num)', 'Denda::lunas/$1');
 // Route untuk memproses konfirmasi pengembalian (Tombol dari halaman permintaan)
 // Ini HARUS 'post' karena form di modal menggunakan method="POST"
 $routes->post('peminjaman/konfirmasi_kembali/(:num)', 'Peminjaman::konfirmasi_kembali/$1');
+
+// Riwayat Atau History Khusus USER Saja
+$routes->get('peminjaman/my_history', 'Peminjaman::my_history');
