@@ -3,78 +3,78 @@
 <?= $this->section('content') ?>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-<div class="container-fluid py-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-            <h4 class="fw-bold text-dark mb-1">Notifikasi</h4>
-            <p class="text-muted small mb-0">Kelola pesan dan pemberitahuan sistem Anda</p>
-        </div>
-        <div class="d-flex gap-2">
-            <a href="<?= base_url('notifikasi/readAll') ?>" class="btn btn-light btn-sm rounded-3 border shadow-sm px-3">
-                <i class="bi bi-check2-all me-1 text-primary"></i> Tandai Semua Dibaca
-            </a>
+<div class="container py-5">
+    <!-- Floating Header -->
+    <div class="row justify-content-center mb-5">
+        <div class="col-lg-8">
+            <div class="d-flex align-items-center justify-content-between p-4 bg-white shadow-sm rounded-5 border border-light">
+                <div class="ps-2">
+                    <h3 class="fw-bold text-dark mb-0">Pusat Pesan</h3>
+                    <small class="text-muted fw-medium"><?= count($notif) ?> Pemberitahuan tersimpan</small>
+                </div>
+                <div class="pe-2">
+                    <a href="<?= base_url('notifikasi/readAll') ?>" class="btn btn-primary rounded-pill px-4 fw-bold shadow-sm">
+                        <i class="bi bi-done-all me-1"></i> Baca Semua
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-12">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
             <?php if (empty($notif)) : ?>
-                <div class="card border-0 shadow-sm rounded-4 py-5">
-                    <div class="card-body text-center">
-                        <div class="bg-light rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
-                            <i class="bi bi-bell-slash fs-1 text-muted"></i>
-                        </div>
-                        <h5 class="fw-bold">Tidak ada notifikasi</h5>
-                        <p class="text-muted">Kotak masuk Anda bersih untuk saat ini.</p>
+                <div class="text-center py-5">
+                    <div class="soft-circle mx-auto mb-4">
+                        <i class="bi bi-chat-left-dots text-muted fs-1"></i>
                     </div>
+                    <h5 class="fw-bold text-dark">Belum ada pesan</h5>
+                    <p class="text-muted">Semua laporan sistem Anda akan muncul di sini.</p>
                 </div>
             <?php else : ?>
-                <div class="notification-container">
+                <div class="notif-feed">
                     <?php foreach ($notif as $n) : ?>
-                        <div class="card border-0 shadow-sm rounded-4 mb-3 notification-card <?= $n['is_read'] == 0 ? 'unread' : '' ?>">
-                            <div class="card-body p-3">
-                                <div class="d-flex align-items-center">
-                                    <div class="flex-shrink-0 me-3">
-                                        <div class="icon-box rounded-circle d-flex align-items-center justify-content-center <?= $n['is_read'] == 0 ? 'bg-primary text-white' : 'bg-light text-muted' ?>" style="width: 45px; height: 45px;">
-                                            <i class="bi <?= $n['is_read'] == 0 ? 'bi-bell-fill' : 'bi-bell' ?>"></i>
+                        <div class="soft-card mb-4 <?= $n['is_read'] == 0 ? 'border-primary-left' : '' ?>">
+                            <div class="card-body p-4">
+                                <div class="row">
+                                    <div class="col-auto">
+                                        <div class="notif-avatar <?= $n['is_read'] == 0 ? 'bg-primary text-white' : 'bg-light text-muted border' ?>">
+                                            <i class="bi <?= $n['is_read'] == 0 ? 'bi-lightning-fill' : 'bi-envelope-open' ?>"></i>
                                         </div>
                                     </div>
-
-                                    <div class="flex-grow-1">
-                                        <div class="d-flex justify-content-between align-items-start">
-                                            <div>
-                                                <p class="mb-1 text-dark <?= $n['is_read'] == 0 ? 'fw-bold' : '' ?>">
-                                                    <?= $n['pesan'] ?>
-                                                </p>
-                                                <div class="d-flex align-items-center gap-3">
-                                                    <span class="text-muted extra-small">
-                                                        <i class="bi bi-calendar3 me-1"></i> <?= date('d M Y', strtotime($n['created_at'])) ?>
-                                                    </span>
-                                                    <span class="text-muted extra-small">
-                                                        <i class="bi bi-clock me-1"></i> <?= date('H:i', strtotime($n['created_at'])) ?>
-                                                    </span>
-                                                </div>
-                                            </div>
-
+                                    <div class="col">
+                                        <div class="d-flex justify-content-between align-items-start mb-2">
+                                            <p class="mb-0 fs-6 text-dark <?= $n['is_read'] == 0 ? 'fw-bold' : 'fw-medium' ?>" style="line-height: 1.4;">
+                                                <?= $n['pesan'] ?>
+                                            </p>
                                             <div class="dropdown">
-                                                <button class="btn btn-link text-muted p-0" type="button" data-bs-toggle="dropdown">
-                                                    <i class="bi bi-three-dots-vertical"></i>
+                                                <button class="btn btn-soft-light btn-sm" type="button" data-bs-toggle="dropdown">
+                                                    <i class="bi bi-three-dots"></i>
                                                 </button>
-                                                <ul class="dropdown-menu dropdown-menu-end border-0 shadow-sm rounded-3">
+                                                <ul class="dropdown-menu dropdown-menu-end border-0 shadow-lg rounded-4 p-2">
                                                     <?php if ($n['is_read'] == 0) : ?>
                                                         <li>
-                                                            <a class="dropdown-item small" href="<?= base_url('notifikasi/read/' . $n['id']) ?>">
-                                                                <i class="bi bi-check2 me-2"></i>Tandai dibaca
+                                                            <a class="dropdown-item rounded-3 mb-1" href="<?= base_url('notifikasi/read/' . $n['id']) ?>">
+                                                                <i class="bi bi-eye me-2"></i>Tandai dibaca
                                                             </a>
                                                         </li>
                                                     <?php endif; ?>
                                                     <li>
-                                                        <a class="dropdown-item small text-danger btn-hapus" href="<?= base_url('notifikasi/hapus/' . $n['id']) ?>">
-                                                            <i class="bi bi-trash me-2"></i>Hapus
+                                                        <a class="dropdown-item rounded-3 text-danger btn-hapus" href="<?= base_url('notifikasi/hapus/' . $n['id']) ?>">
+                                                            <i class="bi bi-trash3 me-2"></i>Hapus
                                                         </a>
                                                     </li>
                                                 </ul>
                                             </div>
+                                        </div>
+                                        <div class="d-flex align-items-center gap-3">
+                                            <span class="badge bg-light text-muted rounded-pill px-3 py-2 fw-normal" style="font-size: 0.7rem;">
+                                                <i class="bi bi-clock me-1"></i> <?= date('d M, H:i', strtotime($n['created_at'])) ?>
+                                            </span>
+                                            <?php if ($n['is_read'] == 0) : ?>
+                                                <span class="pulse-dot"></span>
+                                                <small class="text-primary fw-bold text-uppercase small" style="letter-spacing: 1px;">Baru</small>
+                                            <?php endif; ?>
                                         </div>
                                     </div>
                                 </div>
@@ -88,59 +88,102 @@
 </div>
 
 <style>
-    .notification-card {
-        transition: all 0.3s ease;
-        border-left: 4px solid transparent !important;
+    body {
+        background-color: #f8fafc;
     }
 
-    .notification-card:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05) !important;
+    /* Soft UI Card Design */
+    .soft-card {
+        background: #ffffff;
+        border: 1px solid rgba(0, 0, 0, 0.03);
+        border-radius: 28px;
+        transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05);
     }
 
-    .notification-card.unread {
-        background-color: #f8faff;
-        border-left: 4px solid #4361ee !important;
+    .soft-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.1);
     }
 
-    .extra-small {
-        font-size: 0.75rem;
+    .border-primary-left {
+        border-left: 5px solid #0d6efd !important;
     }
 
-    .icon-box {
-        font-size: 1.2rem;
-        transition: all 0.3s ease;
+    /* Notif Avatar */
+    .notif-avatar {
+        width: 50px;
+        height: 50px;
+        border-radius: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.25rem;
     }
 
-    .unread .icon-box {
-        box-shadow: 0 4px 10px rgba(67, 97, 238, 0.3);
+    /* Pulse Decoration */
+    .pulse-dot {
+        width: 8px;
+        height: 8px;
+        background: #0d6efd;
+        border-radius: 50%;
+        box-shadow: 0 0 0 rgba(13, 110, 253, 0.4);
+        animation: pulse 2s infinite;
     }
 
-    .dropdown-item {
-        padding: 0.5rem 1rem;
+    @keyframes pulse {
+        0% {
+            box-shadow: 0 0 0 0 rgba(13, 110, 253, 0.4);
+        }
+
+        70% {
+            box-shadow: 0 0 0 10px rgba(13, 110, 253, 0);
+        }
+
+        100% {
+            box-shadow: 0 0 0 0 rgba(13, 110, 253, 0);
+        }
     }
 
-    .dropdown-item:hover {
-        background-color: #f8f9fa;
+    /* Helper Styles */
+    .soft-circle {
+        width: 90px;
+        height: 90px;
+        background: #ffffff;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: inset 5px 5px 10px #f1f1f1, inset -5px -5px 10px #ffffff, 5px 5px 15px rgba(0, 0, 0, 0.02);
+    }
+
+    .btn-soft-light {
+        background: #f8fafc;
+        border-radius: 12px;
+        color: #64748b;
+        border: none;
+    }
+
+    .btn-soft-light:hover {
+        background: #f1f5f9;
+        color: #1e293b;
     }
 </style>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const hapusButtons = document.querySelectorAll('.btn-hapus');
-
         hapusButtons.forEach(button => {
             button.addEventListener('click', function(e) {
                 e.preventDefault();
                 const url = this.getAttribute('href');
-
                 Swal.fire({
-                    title: 'Hapus Notifikasi?',
-                    text: "Tindakan ini tidak dapat dibatalkan.",
-                    icon: 'warning',
+                    title: 'Hapus Pesan?',
+                    text: "Notifikasi ini akan dihapus permanen.",
+                    icon: 'question',
                     showCancelButton: true,
-                    confirmButtonColor: '#4361ee',
-                    cancelButtonColor: '#f1f1f1',
+                    confirmButtonColor: '#0d6efd',
+                    cancelButtonColor: '#f1f5f9',
                     confirmButtonText: 'Ya, Hapus',
                     cancelButtonText: 'Batal',
                     customClass: {
